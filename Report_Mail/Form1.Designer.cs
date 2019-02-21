@@ -36,8 +36,8 @@
 			this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
 			this.dataGridView2 = new System.Windows.Forms.DataGridView();
 			this.label1 = new System.Windows.Forms.Label();
-			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
 			this.SuspendLayout();
@@ -55,7 +55,7 @@
 			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.progressBar1.ForeColor = System.Drawing.Color.Red;
-			this.progressBar1.Location = new System.Drawing.Point(12, 58);
+			this.progressBar1.Location = new System.Drawing.Point(12, 27);
 			this.progressBar1.MarqueeAnimationSpeed = 1;
 			this.progressBar1.Name = "progressBar1";
 			this.progressBar1.Size = new System.Drawing.Size(210, 23);
@@ -97,23 +97,23 @@
 			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 42);
+			this.label1.Location = new System.Drawing.Point(12, 11);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
 			this.label1.TabIndex = 3;
 			this.label1.Text = "label1";
 			// 
-			// timer1
-			// 
-			this.timer1.Interval = global::Report_Mail.Properties.Settings.Default.Timer;
-			this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
-			// 
 			// notifyIcon1
 			// 
 			this.notifyIcon1.BalloonTipTitle = "Завершение программы";
 			this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-			this.notifyIcon1.Text = "notifyIcon1";
+			this.notifyIcon1.Text = "Report_Mail";
 			this.notifyIcon1.Visible = true;
+			// 
+			// timer1
+			// 
+			this.timer1.Interval = 60000;
+			this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
 			// 
 			// Form1
 			// 
@@ -121,17 +121,20 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ClientSize = new System.Drawing.Size(234, 93);
+			this.ClientSize = new System.Drawing.Size(234, 62);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.dataGridView2);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
+			this.MaximumSize = new System.Drawing.Size(250, 100);
 			this.MinimizeBox = false;
+			this.MinimumSize = new System.Drawing.Size(250, 100);
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Form1";
+			this.Text = "Report_Mail";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
 			this.ResumeLayout(false);

@@ -12,7 +12,7 @@ namespace Report_Mail.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,7 +26,7 @@ namespace Report_Mail.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dsn=s11")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dsn=dbuser")]
         public string S11 {
             get {
                 return ((string)(this["S11"]));
@@ -35,7 +35,8 @@ namespace Report_Mail.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("lustik_ak@gb15.ru")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Message.To.Add(new MailAddress(Lustik_ak@gb15.ru));\r\nMessage.To.Add(new MailAddre" +
+            "ss(\"Lustik_kg@gb15.ru\"));")]
         public string mail_add {
             get {
                 return ((string)(this["mail_add"]));
@@ -54,6 +55,30 @@ namespace Report_Mail.Properties {
             }
             set {
                 this["Timer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("lustik_ak@gb15.ru")]
+        public string mail_Error {
+            get {
+                return ((string)(this["mail_Error"]));
+            }
+            set {
+                this["mail_Error"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Continuous")]
+        public global::System.Windows.Forms.ProgressBarStyle ProgressBar {
+            get {
+                return ((global::System.Windows.Forms.ProgressBarStyle)(this["ProgressBar"]));
+            }
+            set {
+                this["ProgressBar"] = value;
             }
         }
     }

@@ -58,7 +58,7 @@
 			this.progressBar1.Location = new System.Drawing.Point(12, 27);
 			this.progressBar1.MarqueeAnimationSpeed = 1;
 			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(210, 23);
+			this.progressBar1.Size = new System.Drawing.Size(260, 23);
 			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.progressBar1.TabIndex = 0;
 			this.progressBar1.Visible = false;
@@ -121,16 +121,16 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ClientSize = new System.Drawing.Size(234, 62);
+			this.ClientSize = new System.Drawing.Size(284, 62);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.dataGridView2);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(250, 100);
+			this.MaximumSize = new System.Drawing.Size(400, 100);
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(250, 100);
+			this.MinimumSize = new System.Drawing.Size(300, 100);
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Report_Mail";

@@ -21,6 +21,8 @@ namespace Report_Mail
 		public string Sel_Request_DataTime;
 		public bool Sel_2_on_off;
 		public string Sel_2_request;
+		public string Sel_3_request;
+		public string Sel_4_request;
 		public string xlApp_Cells_1_1;
 		public string xlApp_Cells_1_1_HorizontalAlignment;
 		public string xlApp_Cells_2_1;
@@ -50,7 +52,6 @@ namespace Report_Mail
 		MySqlConnection cnS11 = SqlConn.DBUtilsS11.GetDBConnection();
 		public Form1(string[] file)
 		{
-
 			if (file.Length > 0)
 			{
 				if (File.Exists(@"C:\confs\" + file[1] + ".config"))
@@ -64,6 +65,8 @@ namespace Report_Mail
 						Sel_Request_DataTime = currentConfiguration.AppSettings.Settings["Sel_Request_DataTime_xlApp.Cells[1, 2]"].Value;
 						Sel_2_on_off = bool.Parse(currentConfiguration.AppSettings.Settings["sel_2_on_off"].Value);
 						Sel_2_request = currentConfiguration.AppSettings.Settings["Sel_2_request"].Value;
+						Sel_3_request = currentConfiguration.AppSettings.Settings["Sel_3_request"].Value;
+						Sel_4_request = currentConfiguration.AppSettings.Settings["Sel_4_request"].Value;
 						xlApp_Cells_1_1 = currentConfiguration.AppSettings.Settings["xlApp.Cells[1, 1]"].Value;
 						xlApp_Cells_1_1_HorizontalAlignment = currentConfiguration.AppSettings.Settings["xlApp.Cells[1, 1].HorizontalAlignment"].Value;
 						xlApp_Cells_2_1 = currentConfiguration.AppSettings.Settings["xlApp.Cells[2, 1]"].Value;
@@ -89,7 +92,6 @@ namespace Report_Mail
 						attachments3 = currentConfiguration.AppSettings.Settings["attachments3"].Value;
 						attachments4 = currentConfiguration.AppSettings.Settings["attachments4"].Value;
 						mail_support_error = currentConfiguration.AppSettings.Settings["mail_support_error"].Value;
-
 						InitializeComponent();
 					}
 					catch (Exception ex)
@@ -155,73 +157,84 @@ namespace Report_Mail
 					dataGridView2.DataSource = table1;
 					xls = dataGridView2[0, 0].Value.ToString();
 				}
-				if (Sel_2_on_off)
+				do
 				{
-					x = 1;
-					Invoke(new Action(label));
-					MySqlDataAdapter adapter = new MySqlDataAdapter(Sel_2_request, cnS11);
-					DataTable table = new DataTable();
-					adapter.Fill(table);
-					dataGridView1.DataSource = table;
-					Invoke(new Action(label));
-					//progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
-					backgroundWorker1.ReportProgress(dataGridView1.RowCount + dataGridView1.ColumnCount);
-					backgroundWorker1.ReportProgress(0);
-				}
-				Excel.Application xlApp;
-				Excel.Workbook xlWorkBook;
-				Excel.Worksheet xlWorkSheet;
-				object misValue = System.Reflection.Missing.Value;
-				x = 2;
-				Invoke(new Action(label));
-				//label1.Text = "Создание нового файла EXCEL...";
-				Int16 i, j;
-				int h = int_h;
-				xlApp = new Excel.Application();
-				xlWorkBook = xlApp.Workbooks.Add(misValue);
-				xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-				xlApp.Cells[1, 1] = xlApp_Cells_1_1;
-				xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlRight;
-				xlApp.Cells[1, 2] = xls;
-				xlApp.Cells[2, 1] = xlApp_Cells_2_1;
-				xlApp.Cells[2, 2] = xlApp_Cells_2_2;
-				xlApp.Cells[2, 3] = xlApp_Cells_2_3;
-				xlApp.Cells[2, 4] = xlApp_Cells_2_4;
-				xlWorkSheet.Cells[1, 4].EntireRow.Font.Bold = xlWorkSheet.Cells[2, 4].EntireRow.Font.Bold = xlApp_Cells_1_4_2_4_Font;
-				//xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlCenter;
-				//xlApp.Cells[1, 2].HorizontalAlignment = Excel.Constants.xlCenter;
-				//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
-				x = 3;
-				Invoke(new Action(label));
-				//label1.Text = "Выгрузка в EXCEL...";
-				for (i = 0; i < dataGridView1.RowCount; i++)
-				{
-					h++;
-					for (j = 0; j < dataGridView1.ColumnCount; j++)
+					if (Sel_2_on_off)
 					{
-						backgroundWorker1.ReportProgress(i + j);
-						xlApp.Cells[h + 1, 4].Font.Color = Color.Red;
-						xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
+						if (attachments == 2)
+							Sel_2_request = Sel_3_request;
+						if (attachments == 3)
+							Sel_2_request = Sel_4_request;
+						x = 1;
+						Invoke(new Action(label));
+						MySqlDataAdapter adapter = new MySqlDataAdapter(Sel_2_request, cnS11);
+						DataTable table = new DataTable();
+						adapter.Fill(table);
+						dataGridView1.DataSource = table;
+						Invoke(new Action(label));
+						//progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
+						backgroundWorker1.ReportProgress(dataGridView1.RowCount + dataGridView1.ColumnCount);
+						backgroundWorker1.ReportProgress(0);
 					}
+
+
+					Excel.Application xlApp;
+					Excel.Workbook xlWorkBook;
+					Excel.Worksheet xlWorkSheet;
+					object misValue = System.Reflection.Missing.Value;
+					x = 2;
+					Invoke(new Action(label));
+					//label1.Text = "Создание нового файла EXCEL...";
+					Int16 i, j;
+					int h = int_h;
+					xlApp = new Excel.Application();
+					xlWorkBook = xlApp.Workbooks.Add(misValue);
+					xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+					xlApp.Cells[1, 1] = xlApp_Cells_1_1;
+					xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlRight;
+					xlApp.Cells[1, 2] = xls;
+					xlApp.Cells[2, 1] = xlApp_Cells_2_1;
+					xlApp.Cells[2, 2] = xlApp_Cells_2_2;
+					xlApp.Cells[2, 3] = xlApp_Cells_2_3;
+					xlApp.Cells[2, 4] = xlApp_Cells_2_4;
+					xlWorkSheet.Cells[1, 4].EntireRow.Font.Bold = xlWorkSheet.Cells[2, 4].EntireRow.Font.Bold = xlApp_Cells_1_4_2_4_Font;
+					//xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlCenter;
+					//xlApp.Cells[1, 2].HorizontalAlignment = Excel.Constants.xlCenter;
+					//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
+					x = 3;
+					Invoke(new Action(label));
+					//label1.Text = "Выгрузка в EXCEL...";
+					for (i = 0; i < dataGridView1.RowCount; i++)
+					{
+						h++;
+						for (j = 0; j < dataGridView1.ColumnCount; j++)
+						{
+							backgroundWorker1.ReportProgress(i + j);
+							xlApp.Cells[h + 1, 4].Font.Color = Color.Red;
+							xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
+						}
+					}
+					//backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
+
+
+					((Excel.Range)xlWorkSheet.Columns[1]).AutoFit();
+					((Excel.Range)xlWorkSheet.Columns[2]).AutoFit();
+					((Excel.Range)xlWorkSheet.Columns[3]).AutoFit();
+					((Excel.Range)xlWorkSheet.Columns[4]).AutoFit();
+					x = 4;
+					Invoke(new Action(label));
+					//label1.Text = "Сохранение EXCEL...";
+					xlWorkBook.SaveAs(xlWorkBook_SaveAs, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+					xlWorkBook.Close(true, misValue, misValue);
+					xlApp.Quit();
+
+					ReleaseObject(xlWorkSheet);
+					ReleaseObject(xlWorkBook);
+					ReleaseObject(xlApp);
 				}
-				//backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
-
-
-				((Excel.Range)xlWorkSheet.Columns[1]).AutoFit();
-				((Excel.Range)xlWorkSheet.Columns[2]).AutoFit();
-				((Excel.Range)xlWorkSheet.Columns[3]).AutoFit();
-				((Excel.Range)xlWorkSheet.Columns[4]).AutoFit();
-				x = 4;
-				Invoke(new Action(label));
-				//label1.Text = "Сохранение EXCEL...";
-				xlWorkBook.SaveAs(xlWorkBook_SaveAs, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-				xlWorkBook.Close(true, misValue, misValue);
-				xlApp.Quit();
-
-				ReleaseObject(xlWorkSheet);
-				ReleaseObject(xlWorkBook);
-				ReleaseObject(xlApp);
+				while (attachments > 1);
 				try
 				{
 					x = 5;
@@ -231,25 +244,12 @@ namespace Report_Mail
 					{
 						Credentials = new NetworkCredential(from_mail, from_Password)
 					};
-
-					//string mail_add = "";
-					//string mail_cc = "";
-					//using (StreamReader sr = new StreamReader(Environment.CurrentDirectory + "/mail/mail_add.txt"))
-					//{
-					//	mail_add = mail_add + sr.ReadToEnd();
-					//}
-					//using (StreamReader sr = new StreamReader(Environment.CurrentDirectory + "/mail/mail_cc.txt"))
-					//{
-					//	mail_cc = mail_cc + sr.ReadToEnd();
-					//}
-					string[] split_add = mail_to.Split(',');
 					MailAddressCollection TO_addressList_add = new MailAddressCollection();
 					foreach (var mail in mail_to.Split(','))
 					{
 						MailAddress mailAddress = new MailAddress(mail);
 						TO_addressList_add.Add(mailAddress);
 					}
-					string[] split_cc = mail_cc.Split(',');
 					MailAddressCollection TO_addressList_cc = new MailAddressCollection();
 					foreach (var mail in mail_cc.Split(','))
 					{
@@ -262,8 +262,7 @@ namespace Report_Mail
 					};
 					Message.To.Add(TO_addressList_add.ToString());
 					Message.CC.Add(TO_addressList_cc.ToString());
-					//Message.CC.Add(new MailAddress(Properties.Settings.Default.mail_cc));
-					Message.Subject =subject + xls;
+					Message.Subject = subject + xls;
 					Message.Body = Body;
 					switch (attachments)
 					{
@@ -288,11 +287,10 @@ namespace Report_Mail
 							Message.Attachments.Add(new Attachment(attachments3));
 							Message.Attachments.Add(new Attachment(attachments4));
 							break;
-
-
 					}
 					try
 					{
+
 						smtp.Send(Message);
 						backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 						x = 6;

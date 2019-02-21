@@ -49,6 +49,7 @@ namespace Report_Mail
 		public string attachments4;
 		public string mail_support_error;
 		public string xls;
+		public int Do =1;
 		MySqlConnection cnS11 = SqlConn.DBUtilsS11.GetDBConnection();
 		public Form1(string[] file)
 		{
@@ -124,7 +125,7 @@ namespace Report_Mail
 			else if (x == 2)
 				label1.Text = "Создание нового файла EXCEL...";
 			else if (x == 3)
-				label1.Text = "Выгрузка в EXCEL...";
+				label1.Text = "Выгрузка в EXCEL... " + xlWorkBook_SaveAs;
 			else if (x == 4)
 				label1.Text = "Сохранение EXCEL...";
 			else if (x == 5)
@@ -162,9 +163,10 @@ namespace Report_Mail
 
 					if (Sel_2_on_off)
 					{
-						if (attachments == 2)
+						
+						if (Do == 2)
 							Sel_2_request = Sel_3_request;
-						if (attachments == 3)
+						else if (Do == 3)
 							Sel_2_request = Sel_4_request;
 						x = 1;
 						Invoke(new Action(label));
@@ -178,7 +180,10 @@ namespace Report_Mail
 						backgroundWorker1.ReportProgress(0);
 					}
 
-
+					if (Do == 2)
+						xlWorkBook_SaveAs=attachments2;
+					if (Do == 3)
+						xlWorkBook_SaveAs = attachments3;
 					Excel.Application xlApp;
 					Excel.Workbook xlWorkBook;
 					Excel.Worksheet xlWorkSheet;
@@ -233,10 +238,15 @@ namespace Report_Mail
 					ReleaseObject(xlWorkSheet);
 					ReleaseObject(xlWorkBook);
 					ReleaseObject(xlApp);
-				}
+					
+					if (Do == attachments)
+						break;
+					Do++;
+				}				
 				while (attachments > 1);
 				try
 				{
+
 					x = 5;
 					Invoke(new Action(label));
 					//label1.Text = "Отправка SMTP...";
@@ -264,7 +274,7 @@ namespace Report_Mail
 					Message.CC.Add(TO_addressList_cc.ToString());
 					Message.Subject = subject + xls;
 					Message.Body = Body;
-					switch (attachments)
+					switch (Do)
 					{
 						case 0:
 
@@ -309,8 +319,26 @@ namespace Report_Mail
 					Invoke(new Action(label));
 					x = 9;
 					Invoke(new Action(label));
-
-					File.Delete(xlWorkBook_SaveAs);
+					if(attachments==1)
+						File.Delete(xlWorkBook_SaveAs);
+					else if (attachments == 2)
+					{
+						File.Delete(attachments1);
+						File.Delete(attachments2);
+					}
+					else if (attachments == 3)
+					{
+						File.Delete(attachments1);
+						File.Delete(attachments2);
+						File.Delete(attachments3);
+					}
+					else if (attachments == 4)
+					{
+						File.Delete(attachments1);
+						File.Delete(attachments2);
+						File.Delete(attachments3);
+						File.Delete(attachments4);
+					}
 
 				}
 				catch (Exception ex)

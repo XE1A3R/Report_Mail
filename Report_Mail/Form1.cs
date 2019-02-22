@@ -59,8 +59,10 @@ namespace Report_Mail
 				{
 					try
 					{
-						ExeConfigurationFileMap configFile = new ExeConfigurationFileMap();
-						configFile.ExeConfigFilename = Path.Combine(@"C:\confs\", file[1] + ".config");
+						ExeConfigurationFileMap configFile = new ExeConfigurationFileMap
+						{
+							ExeConfigFilename = Path.Combine(@"C:\confs\", file[1] + ".config")
+						};
 						Configuration currentConfiguration = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
 						Sel_1_on_off_DataTime = bool.Parse(currentConfiguration.AppSettings.Settings["Sel_1_on_off_DataTime"].Value);
 						Sel_Request_DataTime = currentConfiguration.AppSettings.Settings["Sel_Request_DataTime_xlApp.Cells[1, 2]"].Value;
@@ -112,12 +114,10 @@ namespace Report_Mail
 		{
 			label1.Text = "";
 			backgroundWorker1.RunWorkerAsync();
-
 		}
 
-		void label()
+		void Label()
 		{
-
 			progressBar1.Visible = true;
 			progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
 			if (x == 1)
@@ -139,12 +139,8 @@ namespace Report_Mail
 			else if (x == 9)
 				label1.Text = "Выполнено.";
 		}
-
-		void Worker_2()
-		{
-			backgroundWorker2.RunWorkerAsync();
-		}
-
+		
+		[Obsolete]
 		private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
 		{
 			try
@@ -160,7 +156,6 @@ namespace Report_Mail
 				}
 				do
 				{
-
 					if (Sel_2_on_off)
 					{
 						
@@ -169,12 +164,12 @@ namespace Report_Mail
 						else if (Do == 3)
 							Sel_2_request = Sel_4_request;
 						x = 1;
-						Invoke(new Action(label));
+						Invoke(new Action(Label));
 						MySqlDataAdapter adapter = new MySqlDataAdapter(Sel_2_request, cnS11);
 						DataTable table = new DataTable();
 						adapter.Fill(table);
 						dataGridView1.DataSource = table;
-						Invoke(new Action(label));
+						Invoke(new Action(Label));
 						//progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
 						backgroundWorker1.ReportProgress(dataGridView1.RowCount + dataGridView1.ColumnCount);
 						backgroundWorker1.ReportProgress(0);
@@ -189,7 +184,7 @@ namespace Report_Mail
 					Excel.Worksheet xlWorkSheet;
 					object misValue = System.Reflection.Missing.Value;
 					x = 2;
-					Invoke(new Action(label));
+					Invoke(new Action(Label));
 					//label1.Text = "Создание нового файла EXCEL...";
 					Int16 i, j;
 					int h = int_h;
@@ -209,7 +204,7 @@ namespace Report_Mail
 					//xlApp.Cells[1, 2].HorizontalAlignment = Excel.Constants.xlCenter;
 					//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
 					x = 3;
-					Invoke(new Action(label));
+					Invoke(new Action(Label));
 					//label1.Text = "Выгрузка в EXCEL...";
 					for (i = 0; i < dataGridView1.RowCount; i++)
 					{
@@ -229,7 +224,7 @@ namespace Report_Mail
 					((Excel.Range)xlWorkSheet.Columns[3]).AutoFit();
 					((Excel.Range)xlWorkSheet.Columns[4]).AutoFit();
 					x = 4;
-					Invoke(new Action(label));
+					Invoke(new Action(Label));
 					//label1.Text = "Сохранение EXCEL...";
 					xlWorkBook.SaveAs(xlWorkBook_SaveAs, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
 					xlWorkBook.Close(true, misValue, misValue);
@@ -248,7 +243,7 @@ namespace Report_Mail
 				{
 
 					x = 5;
-					Invoke(new Action(label));
+					Invoke(new Action(Label));
 					//label1.Text = "Отправка SMTP...";
 					SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 					{
@@ -304,21 +299,21 @@ namespace Report_Mail
 						smtp.Send(Message);
 						backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 						x = 6;
-						Invoke(new Action(label));
+						Invoke(new Action(Label));
 						//label1.Text = "Выполнено.";
 					}
 					catch (SmtpException)
 					{
 						x = 7;
-						Invoke(new Action(label));
+						Invoke(new Action(Label));
 						backgroundWorker1.CancelAsync();
 						//label1.Text = "Ошибка.";
 					}
 					Message.Attachments.Dispose();
 					x = 8;
-					Invoke(new Action(label));
+					Invoke(new Action(Label));
 					x = 9;
-					Invoke(new Action(label));
+					Invoke(new Action(Label));
 					if(attachments==1)
 						File.Delete(xlWorkBook_SaveAs);
 					else if (attachments == 2)
@@ -415,11 +410,6 @@ namespace Report_Mail
 			//this.Invoke(new Action(Report_1));
 		}
 
-		private void BackgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
-		{
-
-			//this.Invoke(new Action(Report_2));
-		}
 		private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			progressBar1.Value = e.ProgressPercentage;
@@ -429,196 +419,7 @@ namespace Report_Mail
 		{
 			Invoke(new Action(Sleep_Exit));
 		}
-
-		[Obsolete]
-		void Report_1()
-		{
-			try
-			{
-				MySql.Data.MySqlClient.MySqlConnection cnS11 = SqlConn.DBUtilsS11.GetDBConnection();
-				MySqlDataAdapter adapter1 = new MySqlDataAdapter("SELECT CONCAT('с ', DATE_FORMAT(DATE_sub(CURDATE(), INTERVAL 18 HOUR), '%d.%m.%Y %H:%i'), ' по ', DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 6 HOUR), '%d.%m.%Y %H:%i'))", cnS11);
-				DataTable table1 = new DataTable();
-				adapter1.Fill(table1);
-				dataGridView2.DataSource = table1;
-				var xls = dataGridView2[0, 0].Value.ToString();
-				label1.Text = "Выполняется процедура...";
-				MySqlDataAdapter adapter = new MySqlDataAdapter("CALL procStatementForPastDay", cnS11);
-				DataTable table = new DataTable();
-				adapter.Fill(table);
-				dataGridView1.DataSource = table;
-				Console.WriteLine(xls);
-				progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
-				backgroundWorker1.ReportProgress(dataGridView1.RowCount + dataGridView1.ColumnCount);
-				backgroundWorker1.ReportProgress(0);
-
-				Excel.Application xlApp;
-				Excel.Workbook xlWorkBook;
-				Excel.Worksheet xlWorkSheet;
-				object misValue = System.Reflection.Missing.Value;
-				label1.Text = "Создание нового файла EXCEL...";
-				Int16 i, j;
-				int h = 1;
-				xlApp = new Excel.Application();
-				xlWorkBook = xlApp.Workbooks.Add(misValue);
-				xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-				xlApp.Cells[1, 1] = "Отчет";
-				xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlRight;
-				xlApp.Cells[1, 2] = xls;
-				xlApp.Cells[2, 1] = "Выписан из Отделения";
-				xlApp.Cells[2, 2] = "Врач";
-				xlApp.Cells[2, 3] = "Выписано";
-				xlApp.Cells[2, 4] = "Без диагноза";
-				xlWorkSheet.Cells[1, 4].EntireRow.Font.Bold = xlWorkSheet.Cells[2, 4].EntireRow.Font.Bold = true;
-				//xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlCenter;
-				//xlApp.Cells[1, 2].HorizontalAlignment = Excel.Constants.xlCenter;
-				//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
-				label1.Text = "Выгрузка в EXCEL...";
-				for (i = 0; i < dataGridView1.RowCount; i++)
-				{
-					h++;
-					Thread.Sleep(1000);
-					backgroundWorker1.ReportProgress(i + 1);
-					for (j = 0; j < dataGridView1.ColumnCount; j++)
-					{
-
-						xlApp.Cells[h + 1, 4].Font.Color = Color.Red;
-						xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
-					}
-				}
-				backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
-
-
-				((Excel.Range)xlWorkSheet.Columns[1]).AutoFit();
-				((Excel.Range)xlWorkSheet.Columns[2]).AutoFit();
-				((Excel.Range)xlWorkSheet.Columns[3]).AutoFit();
-				((Excel.Range)xlWorkSheet.Columns[4]).AutoFit();
-				label1.Text = "Сохранение EXCEL...";
-				xlWorkBook.SaveAs(@"" + Environment.CurrentDirectory + "/Test.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-				xlWorkBook.Close(true, misValue, misValue);
-				xlApp.Quit();
-
-				ReleaseObject(xlWorkSheet);
-				ReleaseObject(xlWorkBook);
-				ReleaseObject(xlApp);
-				try
-				{
-					label1.Text = "Отправка SMTP...";
-					SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
-					{
-						Credentials = new NetworkCredential("robot@gb15.ru", "1oc@1RoBoT")
-					};
-					MailMessage Message = new MailMessage
-					{
-						From = new MailAddress("robot@gb15.ru", "Robot")
-					};
-					Message.To.Add(new MailAddress(Properties.Settings.Default.mail_add));
-					//Message.CC.Add(new MailAddress(Properties.Settings.Default.mail_cc));
-					Message.Subject = xls;
-					Message.Body = "Добрый день. \n" +
-									"" + Environment.NewLine + "" +
-									"Отчет во вложении." +
-									"" + Environment.NewLine + "" +
-									"" + Environment.NewLine + "" +
-									"--\n" +
-									"С уважением,\n" +
-									"Группа МИС\n" +
-									"СПб ГБУЗ 'Городская больница № 15'";
-					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/Test.xls"));
-					try
-					{
-
-						smtp.Send(Message);
-						label1.Text = "Выполнено.";
-					}
-					catch (SmtpException)
-					{
-						label1.Text = "Ошибка.";
-					}
-					Message.Attachments.Dispose();
-					File.Delete(@"" + Environment.CurrentDirectory + "/Test.xls");
-
-				}
-				catch (Exception ex)
-				{
-					var today = DateTime.Today;
-					var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
-					var monday_old = today.AddDays(-day_old);
-					var sunday_old = monday_old.AddDays(6);
-					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
-							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "" +
-							"     {4}" +
-							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
-
-					SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
-					{
-						Credentials = new NetworkCredential("robot@gb15.ru", "1oc@1RoBoT")
-					};
-					MailMessage Message = new MailMessage
-					{
-						From = new MailAddress("robot@gb15.ru", "Report")
-					};
-					Message.To.Add(new MailAddress(Properties.Settings.Default.mail_Error));
-					Message.Subject = "Error";
-					Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
-						"     " + ex.Message + "";
-					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
-					try
-					{
-						smtp.Send(Message);
-					}
-					catch (SmtpException)
-					{
-						MessageBox.Show("Ошибка!", "smtp");
-
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				var today = DateTime.Today;
-				var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
-				var monday_old = today.AddDays(-day_old);
-				var sunday_old = monday_old.AddDays(6);
-				Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
-						"" + Environment.NewLine + "" +
-						"" + Environment.NewLine + "" +
-						"     {4}" +
-						"" + Environment.NewLine + "" +
-						"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
-
-				SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
-				{
-					Credentials = new NetworkCredential("robot@gb15.ru", "1oc@1RoBoT")
-				};
-				MailMessage Message = new MailMessage
-				{
-					From = new MailAddress("robot@gb15.ru", "Report")
-				};
-				Message.To.Add(new MailAddress(Properties.Settings.Default.mail_Error));
-				Message.Subject = "Error";
-				Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
-					"     " + ex.Message + "";
-				Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
-				try
-				{
-					smtp.Send(Message);
-				}
-				catch (SmtpException)
-				{
-					MessageBox.Show("Ошибка!", "smtp");
-
-				}
-			}
-		}
-
-		void Report_2()
-		{
-
-		}
-
+		
 		void Sleep_Exit()
 		{
 			timer1.Enabled = true;
@@ -628,6 +429,7 @@ namespace Report_Mail
 			Properties.Settings.Default.Save();
 
 		}
+
 		private void ReleaseObject(object obj)
 		{
 			try
@@ -650,16 +452,10 @@ namespace Report_Mail
 		{
 			Application.Exit();
 		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-
-		}
-
+		
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			Worker_1();
-			Properties.Settings.Default.Save();
 		}
 	}
 }

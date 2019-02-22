@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Prof;
+using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.Odbc;
 using System.Drawing;
-using System.Threading;
+using System.IO;
+using System.Net;
+using System.Net.Mail;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Net.Mail;
-using System.Net;
-using System.IO;
-using MySql.Data.MySqlClient;
-using Prof;
-using System.Configuration;
-using System.Diagnostics;
 
 namespace Report_Mail
 {
@@ -53,7 +51,7 @@ namespace Report_Mail
 		public string mail_support_error;
 		public string xls;
 		public int Do = 1;
-		MySqlConnection cnS11 = SqlConn.DBUtilsS11.GetDBConnection();
+		readonly OdbcConnection cnS11 = new OdbcConnection(Properties.Settings.Default.S11);
 		public Form1(string[] file)
 		{
 			if (file.Length > 0)
@@ -152,7 +150,7 @@ namespace Report_Mail
 			{
 				if (Sel_1_on_off_DataTime)
 				{
-					MySqlDataAdapter adapter1 = new MySqlDataAdapter(Sel_Request_DataTime, cnS11);
+					OdbcDataAdapter adapter1 = new OdbcDataAdapter(Sel_Request_DataTime, cnS11);
 					//MySqlDataAdapter adapter1 = new MySqlDataAdapter("SELECT CONCAT('с ', DATE_FORMAT(DATE_sub(CURDATE(), INTERVAL 18 HOUR), '%d.%m.%Y %H:%i'), ' по ', DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 6 HOUR), '%d.%m.%Y %H:%i'))", cnS11);
 					DataTable table1 = new DataTable();
 					adapter1.Fill(table1);
@@ -170,7 +168,7 @@ namespace Report_Mail
 							Sel_2_request = Sel_4_request;
 						x = 1;
 						Invoke(new Action(Label));
-						MySqlDataAdapter adapter = new MySqlDataAdapter(Sel_2_request, cnS11);
+						OdbcDataAdapter adapter = new OdbcDataAdapter(Sel_2_request, cnS11);
 						DataTable table = new DataTable();
 						adapter.Fill(table);
 						dataGridView1.DataSource = table;
@@ -240,11 +238,9 @@ namespace Report_Mail
 						ReleaseObject(xlWorkBook);
 						ReleaseObject(xlApp);
 					}
-						if (Do == attachments)
-							break;
-					Process.Start(@"C:\confs\q\procPaidBedOccupancy.xlsm");
-					Process.Start(@"C:\confs\q\procWhoIsLyingPaidBed.xlsm");
-					Do++;					
+					if (Do == attachments)
+						break;
+					Do++;
 				}
 				while (attachments > 1);
 				try

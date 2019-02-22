@@ -134,6 +134,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Report_Mail_TemporaryKey.pfx" />
+    <None Include="test.config" />
+    <None Include="test1.config" />
+    <None Include="test_1.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

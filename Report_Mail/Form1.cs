@@ -15,45 +15,52 @@ namespace Report_Mail
 {
 	public partial class Form1 : Form
 	{
-		public int x = 0;
-		public bool Sel_1_on_off_DataTime;
-		public string Sel_Request_DataTime;
-		public bool Sel_2_on_off;
-		public string Sel_2_request;
-		public string Sel_3_request;
-		public string Sel_4_request;
-		public bool excel_export;
-		public string xlApp_Cells_1_1;
-		public string xlApp_Cells_1_1_HorizontalAlignment;
-		public string xlApp_Cells_2_1;
-		public string xlApp_Cells_1_2_HorizontalAlignment;
-		public string xlApp_Cells_2_2;
-		public string xlApp_Cells_2_3;
-		public string xlApp_Cells_2_4;
-		public bool xlApp_Cells_1_4_2_4_Font;
-		public int int_h;
-		public string xlWorkBook_SaveAs;
-		public bool mail_export;
-		public string smtpClient;
-		public int smtpClient_port;
-		public string from_mail;
-		public string from_mail_name;
-		public string from_Password;
-		public string mail_to;
-		public string mail_cc;
-		public string subject;
-		public string Body;
-		public int attachments;
-		public string attachments1;
-		public string attachments2;
-		public string attachments3;
-		public string attachments4;
-		public string mail_support_error;
-		public string xls;
-		public int Do = 1;
+		private int x = 0;
+		private bool Sel_DataTime;
+		private string Sel_Request_DataTime;
+		private bool Sel_2;
+		private string Sel_2_request;
+		private string Sel_3_request;
+		private string Sel_4_request;
+		private bool excel_export;
+		private string conf1;
+		private string conf2;
+		private string conf3;
+		private string conf4;
+		private string xlApp_Cells_1_1;
+		private string xlApp_Cells_1_1_HorizontalAlignment;
+		private string xlApp_Cells_2_1;
+		private string xlApp_Cells_1_2_HorizontalAlignment;
+		private string xlApp_Cells_2_2;
+		private string xlApp_Cells_2_3;
+		private string xlApp_Cells_2_4;
+		private bool xlApp_Cells_1_4_2_4_Font;
+		private int int_h;
+		private string xlWorkBook_SaveAs;
+		private bool mail_export;
+		private string smtpClient;
+		private int smtpClient_port;
+		private string from_mail;
+		private string from_mail_name;
+		private string from_Password;
+		private string mail_to;
+		private string mail_cc;
+		private string subject;
+		private string Body;
+		private int attachments;
+		private string attachments1;
+		private string attachments2;
+		private string attachments3;
+		private string attachments4;
+		private string mail_support_error;
+		private string xls;
+		private int Do = 1;
 		readonly OdbcConnection cnS11 = new OdbcConnection(Properties.Settings.Default.S11);
+
+		[Obsolete]
 		public Form1(string[] file)
 		{
+			InitializeComponent();
 			if (file.Length > 0)
 			{
 				if (File.Exists(@"C:\confs\" + file[1] + ".config"))
@@ -64,45 +71,48 @@ namespace Report_Mail
 						{
 							ExeConfigFilename = Path.Combine(@"C:\confs\", file[1] + ".config")
 						};
-						Configuration currentConfiguration = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
-						Sel_1_on_off_DataTime = bool.Parse(currentConfiguration.AppSettings.Settings["Sel_1_on_off_DataTime"].Value);
-						Sel_Request_DataTime = currentConfiguration.AppSettings.Settings["Sel_Request_DataTime_xlApp.Cells[1, 2]"].Value;
-						Sel_2_on_off = bool.Parse(currentConfiguration.AppSettings.Settings["sel_2_on_off"].Value);
-						Sel_2_request = currentConfiguration.AppSettings.Settings["Sel_2_request"].Value;
-						Sel_3_request = currentConfiguration.AppSettings.Settings["Sel_3_request"].Value;
-						Sel_4_request = currentConfiguration.AppSettings.Settings["Sel_4_request"].Value;
-						excel_export = bool.Parse(currentConfiguration.AppSettings.Settings["excel_export"].Value);
-						xlApp_Cells_1_1 = currentConfiguration.AppSettings.Settings["xlApp.Cells[1, 1]"].Value;
-						xlApp_Cells_1_1_HorizontalAlignment = currentConfiguration.AppSettings.Settings["xlApp.Cells[1, 1].HorizontalAlignment"].Value;
-						xlApp_Cells_2_1 = currentConfiguration.AppSettings.Settings["xlApp.Cells[2, 1]"].Value;
-						xlApp_Cells_1_2_HorizontalAlignment = currentConfiguration.AppSettings.Settings["xlApp.Cells[1, 2].HorizontalAlignment"].Value;
-						xlApp_Cells_2_2 = currentConfiguration.AppSettings.Settings["xlApp.Cells[2, 2]"].Value;
-						xlApp_Cells_2_3 = currentConfiguration.AppSettings.Settings["xlApp.Cells[2, 3]"].Value;
-						xlApp_Cells_2_4 = currentConfiguration.AppSettings.Settings["xlApp.Cells[2, 4]"].Value;
-						xlApp_Cells_1_4_2_4_Font = bool.Parse(currentConfiguration.AppSettings.Settings["xlWorkSheet.Cells[1, 4].EntireRow.Font.Bold = xlWorkSheet.Cells[2, 4].EntireRow.Font.Bold"].Value);
-						int_h = int.Parse(currentConfiguration.AppSettings.Settings["int h"].Value);
-						xlWorkBook_SaveAs = currentConfiguration.AppSettings.Settings["xlWorkBook.SaveAs"].Value;
-						mail_export = bool.Parse(currentConfiguration.AppSettings.Settings["mail_export"].Value);
-						smtpClient = currentConfiguration.AppSettings.Settings["smtpClient"].Value;
-						smtpClient_port = int.Parse(currentConfiguration.AppSettings.Settings["smtpClient_port"].Value);
-						from_mail = currentConfiguration.AppSettings.Settings["from_mail"].Value;
-						from_mail_name = currentConfiguration.AppSettings.Settings["from_mail_name"].Value;
-						from_Password = currentConfiguration.AppSettings.Settings["from_Password"].Value;
-						mail_to = currentConfiguration.AppSettings.Settings["mail_to"].Value;
-						mail_cc = currentConfiguration.AppSettings.Settings["mail_cc"].Value;
-						subject = currentConfiguration.AppSettings.Settings["subject"].Value;
-						Body = currentConfiguration.AppSettings.Settings["Body"].Value;
-						attachments = int.Parse(currentConfiguration.AppSettings.Settings["attachments"].Value);
-						attachments1 = currentConfiguration.AppSettings.Settings["attachments1"].Value;
-						attachments2 = currentConfiguration.AppSettings.Settings["attachments2"].Value;
-						attachments3 = currentConfiguration.AppSettings.Settings["attachments3"].Value;
-						attachments4 = currentConfiguration.AppSettings.Settings["attachments4"].Value;
-						mail_support_error = currentConfiguration.AppSettings.Settings["mail_support_error"].Value;
-						InitializeComponent();
+						Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
+						Sel_DataTime = bool.Parse(config.AppSettings.Settings["Sel_DataTime"].Value);
+						Sel_Request_DataTime = config.AppSettings.Settings["Sel_Request_DataTime"].Value;
+						Sel_2 = bool.Parse(config.AppSettings.Settings["sel_2"].Value);
+						Sel_2_request = config.AppSettings.Settings["Sel_2_request"].Value;
+						Sel_3_request = config.AppSettings.Settings["Sel_3_request"].Value;
+						Sel_4_request = config.AppSettings.Settings["Sel_4_request"].Value;
+						excel_export = bool.Parse(config.AppSettings.Settings["excel_export"].Value);
+						conf1 = config.AppSettings.Settings["conf1"].Value;
+						conf2 = config.AppSettings.Settings["conf2"].Value;
+						conf3 = config.AppSettings.Settings["conf3"].Value;
+						conf4 = config.AppSettings.Settings["conf4"].Value;
+						smtpClient = config.AppSettings.Settings["smtpClient"].Value;
+						smtpClient_port = int.Parse(config.AppSettings.Settings["smtpClient_port"].Value);
+						from_mail = config.AppSettings.Settings["from_mail"].Value;
+						from_mail_name = config.AppSettings.Settings["from_mail_name"].Value;
+						from_Password = config.AppSettings.Settings["from_Password"].Value;
+						mail_to = config.AppSettings.Settings["mail_to"].Value;
+						mail_cc = config.AppSettings.Settings["mail_cc"].Value;
+						subject = config.AppSettings.Settings["subject"].Value;
+						Body = config.AppSettings.Settings["Body"].Value;
+						attachments = int.Parse(config.AppSettings.Settings["attachments"].Value);
+						attachments1 = config.AppSettings.Settings["attachments1"].Value;
+						attachments2 = config.AppSettings.Settings["attachments2"].Value;
+						attachments3 = config.AppSettings.Settings["attachments3"].Value;
+						attachments4 = config.AppSettings.Settings["attachments4"].Value;
+						mail_support_error = config.AppSettings.Settings["mail_support_error"].Value;						
 					}
 					catch (Exception ex)
 					{
-						MessageBox.Show("Error - " + ex.Message);
+						MessageBox.Show("Error - " + ex.InnerException+"\n" + ex.StackTrace + "\n" + ex.Message);
+					}
+				}
+				else if(File.Exists(Environment.CurrentDirectory + file[1] + ".config"))
+				{
+					try
+					{
+
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("Error - " + ex.InnerException + "\n" + ex.StackTrace + "\n" + ex.Message);
 					}
 				}
 				else
@@ -147,11 +157,10 @@ namespace Report_Mail
 		private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
 		{
 			try
-			{
-				if (Sel_1_on_off_DataTime)
+			{				
+				if (Sel_DataTime)
 				{
-					OdbcDataAdapter adapter1 = new OdbcDataAdapter(Sel_Request_DataTime, cnS11);
-					//MySqlDataAdapter adapter1 = new MySqlDataAdapter("SELECT CONCAT('с ', DATE_FORMAT(DATE_sub(CURDATE(), INTERVAL 18 HOUR), '%d.%m.%Y %H:%i'), ' по ', DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 6 HOUR), '%d.%m.%Y %H:%i'))", cnS11);
+					OdbcDataAdapter adapter1 = new OdbcDataAdapter(Sel_Request_DataTime, cnS11);					
 					DataTable table1 = new DataTable();
 					adapter1.Fill(table1);
 					dataGridView2.DataSource = table1;
@@ -159,9 +168,8 @@ namespace Report_Mail
 				}
 				do
 				{
-					if (Sel_2_on_off)
+					if (Sel_2)
 					{
-
 						if (Do == 2)
 							Sel_2_request = Sel_3_request;
 						else if (Do == 3)
@@ -179,64 +187,119 @@ namespace Report_Mail
 					}
 					if (excel_export)
 					{
-						if (Do == 2)
-							xlWorkBook_SaveAs = attachments2;
-						if (Do == 3)
-							xlWorkBook_SaveAs = attachments3;
-						Excel.Application xlApp;
-						Excel.Workbook xlWorkBook;
-						Excel.Worksheet xlWorkSheet;
-						object misValue = System.Reflection.Missing.Value;
-						x = 2;
-						Invoke(new Action(Label));
-						//label1.Text = "Создание нового файла EXCEL...";
-						Int16 i, j;
-						int h = int_h;
-						xlApp = new Excel.Application();
-						xlWorkBook = xlApp.Workbooks.Add(misValue);
-						xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-						xlApp.Cells[1, 1] = xlApp_Cells_1_1;
-						xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlRight;
-						xlApp.Cells[1, 2] = xls;
-						xlApp.Cells[2, 1] = xlApp_Cells_2_1;
-						xlApp.Cells[2, 2] = xlApp_Cells_2_2;
-						xlApp.Cells[2, 3] = xlApp_Cells_2_3;
-						xlApp.Cells[2, 4] = xlApp_Cells_2_4;
-						xlWorkSheet.Cells[1, 4].EntireRow.Font.Bold = xlWorkSheet.Cells[2, 4].EntireRow.Font.Bold = xlApp_Cells_1_4_2_4_Font;
-						//xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlCenter;
-						//xlApp.Cells[1, 2].HorizontalAlignment = Excel.Constants.xlCenter;
-						//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
-						x = 3;
-						Invoke(new Action(Label));
-						//label1.Text = "Выгрузка в EXCEL...";
-						for (i = 0; i < dataGridView1.RowCount; i++)
+						try
 						{
-							h++;
-							for (j = 0; j < dataGridView1.ColumnCount; j++)
+							ExeConfigurationFileMap configFile_excel = new ExeConfigurationFileMap();
+							configFile_excel.ExeConfigFilename = Path.Combine(conf1);
+							Configuration config_excel = ConfigurationManager.OpenMappedExeConfiguration(configFile_excel, ConfigurationUserLevel.None);
+							string row_1 = config_excel.AppSettings.Settings["row_1"].Value;
+							var Cells_xlRight = config_excel.AppSettings.Settings["Cells_xlRight"].Value;
+							var Cells_xlCenter = config_excel.AppSettings.Settings["Cells_xlCenter"].Value;
+							var Cells_xlLeft = config_excel.AppSettings.Settings["Cells_xlLeft"].Value;
+							if (Do == 2)							
+								conf1 = conf2;							
+							if (Do == 3)
+								conf1 = conf2;
+							Excel.Application xlApp;
+							Excel.Workbook xlWorkBook;
+							Excel.Worksheet xlWorkSheet;
+							object misValue = System.Reflection.Missing.Value;
+							x = 2;
+							Invoke(new Action(Label));
+							//label1.Text = "Создание нового файла EXCEL...";
+							Int16 i, j;
+							int h = int_h;
+							xlApp = new Excel.Application();
+							xlWorkBook = xlApp.Workbooks.Add(misValue);
+							xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+							int f=0;
+							var qwert = row_1.Split(',');
+							foreach (var row in qwert)
 							{
-								backgroundWorker1.ReportProgress(i + j);
-								xlApp.Cells[h + 1, 4].Font.Color = Color.Red;
-								xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
+								xlApp.Cells[1,f+ 1] = row;
+								
+								f++;
 							}
+							int er=1;
+							Excel.Constants xlLeft = Excel.Constants.xlLeft;
+							Excel.Constants xlRight = Excel.Constants.xlRight;
+							Excel.Constants xlCenter = Excel.Constants.xlCenter;
+							var xl = Excel.Constants.xlLeft;							
+							foreach (var row in Cells_xlRight.Split(','))
+							{
+								if (Cells_xlRight != "")
+								{
+									xl = xlRight;
+									er = int.Parse(row);
+								}
+								xlApp.Cells[1, er].HorizontalAlignment = xl;
+							}
+							foreach (var row in Cells_xlCenter.Split(','))
+							{
+								if (Cells_xlCenter != "")
+								{
+									xl = xlCenter;
+									er = int.Parse(row);
+								}
+								xlApp.Cells[1, er].HorizontalAlignment = xl;
+							}
+							foreach (var row in Cells_xlLeft.Split(','))
+							{
+								if (Cells_xlLeft != "")
+								{
+									xl = xlLeft;
+									er = int.Parse(row);
+								}
+								xlApp.Cells[1, er].HorizontalAlignment = xl;
+							}
+							//xlApp.Cells[1, 1] = qwer;
+							//xlApp.Cells[1, er].HorizontalAlignment = Excel.Constants.xlRight;
+							//xlApp.Cells[1, 2] = xls;
+							//xlApp.Cells[2, 1] = xlApp_Cells_2_1;
+							//xlApp.Cells[2, 2] = xlApp_Cells_2_2;
+							//xlApp.Cells[2, 3] = xlApp_Cells_2_3;
+							//xlApp.Cells[2, 4] = xlApp_Cells_2_4;
+							//xlWorkSheet.Cells[1, 4].EntireRow.Font.Bold = xlWorkSheet.Cells[2, 4].EntireRow.Font.Bold = xlApp_Cells_1_4_2_4_Font;
+							//xlApp.Cells[1, 1].HorizontalAlignment = Excel.Constants.xlCenter;
+							//xlApp.Cells[1, 2].HorizontalAlignment = Excel.Constants.xlCenter;
+							//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
+							x = 3;
+							Invoke(new Action(Label));
+							//label1.Text = "Выгрузка в EXCEL...";
+							for (i = 0; i < dataGridView1.RowCount; i++)
+							{
+								h++;
+								for (j = 0; j < dataGridView1.ColumnCount; j++)
+								{
+									backgroundWorker1.ReportProgress(i + j);
+									xlApp.Cells[h + 1, 4].Font.Color = Color.Red;
+									xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
+								}
+							}
+							//backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
+
+
+							((Excel.Range)xlWorkSheet.Columns[1]).AutoFit();
+							((Excel.Range)xlWorkSheet.Columns[2]).AutoFit();
+							((Excel.Range)xlWorkSheet.Columns[3]).AutoFit();
+							((Excel.Range)xlWorkSheet.Columns[4]).AutoFit();
+							x = 4;
+							Invoke(new Action(Label));
+							//label1.Text = "Сохранение EXCEL...";
+							xlWorkBook.SaveAs(attachments1, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+							xlWorkBook.Close(true, misValue, misValue);
+							xlApp.Quit();
+
+							ReleaseObject(xlWorkSheet);
+							ReleaseObject(xlWorkBook);
+							ReleaseObject(xlApp);
+							
 						}
-					//backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
+						catch(Exception ex)
+						{
 
-
-					((Excel.Range)xlWorkSheet.Columns[1]).AutoFit();
-						((Excel.Range)xlWorkSheet.Columns[2]).AutoFit();
-						((Excel.Range)xlWorkSheet.Columns[3]).AutoFit();
-						((Excel.Range)xlWorkSheet.Columns[4]).AutoFit();
-						x = 4;
-						Invoke(new Action(Label));
-						//label1.Text = "Сохранение EXCEL...";
-						xlWorkBook.SaveAs(xlWorkBook_SaveAs, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-						xlWorkBook.Close(true, misValue, misValue);
-						xlApp.Quit();
-
-						ReleaseObject(xlWorkSheet);
-						ReleaseObject(xlWorkBook);
-						ReleaseObject(xlApp);
+							MessageBox.Show(conf1 + ex.InnerException + "\n" + ex.StackTrace + "\n" + ex.Message);
+						}
 					}
 					if (Do == attachments)
 						break;
@@ -307,41 +370,71 @@ namespace Report_Mail
 							x = 6;
 							Invoke(new Action(Label));
 							//label1.Text = "Выполнено.";
+							
 						}
-						catch (SmtpException)
+						catch (SmtpException ex)
 						{
 							x = 7;
 							Invoke(new Action(Label));
 							backgroundWorker1.CancelAsync();
+							notifyIcon1.BalloonTipIcon = ToolTipIcon.Error;
+							notifyIcon1.BalloonTipText = "SMTP Error ";
+							notifyIcon1.ShowBalloonTip(5000);
 							//label1.Text = "Ошибка.";
+							var today = DateTime.Today;
+							var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
+							var monday_old = today.AddDays(-day_old);
+							var sunday_old = monday_old.AddDays(6);
+							Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
+									"" + Environment.NewLine + "" +
+									"" + Environment.NewLine + "" +
+									"     {4}" +
+									"" + Environment.NewLine + "" +
+									"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
+
+							Message.To.Add(new MailAddress(mail_support_error));
+							Message.Subject = "Error";
+							Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
+								"     " + ex.Message + "";
+							Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+							try
+							{
+								smtp.Send(Message);
+							}
+							catch (SmtpException)
+							{
+								MessageBox.Show("Ошибка!", "smtp");
+							}
 						}
-						Message.Attachments.Dispose();
-						x = 8;
-						Invoke(new Action(Label));
-						x = 9;
-						Invoke(new Action(Label));
-						if (attachments == 1)
-							File.Delete(xlWorkBook_SaveAs);
-						else if (attachments == 2)
+						finally
 						{
-							File.Delete(attachments1);
-							File.Delete(attachments2);
-						}
-						else if (attachments == 3)
-						{
-							File.Delete(attachments1);
-							File.Delete(attachments2);
-							File.Delete(attachments3);
-						}
-						else if (attachments == 4)
-						{
-							File.Delete(attachments1);
-							File.Delete(attachments2);
-							File.Delete(attachments3);
-							File.Delete(attachments4);
+							Message.Attachments.Dispose();
+							x = 8;
+							Invoke(new Action(Label));
+							x = 9;
+							Invoke(new Action(Label));
+							if (attachments == 1)
+								File.Delete(xlWorkBook_SaveAs);
+							else if (attachments == 2)
+							{
+								File.Delete(attachments1);
+								File.Delete(attachments2);
+							}
+							else if (attachments == 3)
+							{
+								File.Delete(attachments1);
+								File.Delete(attachments2);
+								File.Delete(attachments3);
+							}
+							else if (attachments == 4)
+							{
+								File.Delete(attachments1);
+								File.Delete(attachments2);
+								File.Delete(attachments3);
+								File.Delete(attachments4);
+							}
 						}
 					}
-
 				}
 				catch (Exception ex)
 				{
@@ -375,7 +468,7 @@ namespace Report_Mail
 					}
 					catch (SmtpException)
 					{
-						MessageBox.Show("Ошибка!", "smtp");
+						MessageBox.Show("Ошибка!", "smtp" );
 					}
 				}
 			}

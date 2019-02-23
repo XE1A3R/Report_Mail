@@ -133,10 +133,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="StatementForPastDay.config" />
+    <None Include="template_StatementForPastDay\template_StatementForPastDay.config" />
+    <None Include="template_temp-report\template_procPaidBedOccupancy.config" />
+    <None Include="template_temp-report\template_procWhoIsLyingPaidBed.config" />
     <None Include="test.config" />
     <None Include="test1.config" />
     <None Include="test_1.config" />
     <None Include="test_2.config" />
+    <None Include="test_report.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -145,10 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="computer-icons-checklist-clip-art-checklist-png-download-1200-with-checklist-icon-transparent %283%29.ico" />
-    <Content Include="mail\mail_add.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mail\mail_cc.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Prof\Prof.csproj">

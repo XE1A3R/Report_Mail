@@ -220,7 +220,7 @@ namespace Report_Mail
 							var color = config_excel.AppSettings.Settings["color"].Value;
 							var data_1 = config_excel.AppSettings.Settings["data_1"].Value;
 							var data_2 = config_excel.AppSettings.Settings["data_2"].Value;
-							
+
 							Excel.Application xlApp;
 							Excel.Workbook xlWorkBook;
 							Excel.Worksheet xlWorkSheet;
@@ -376,6 +376,8 @@ namespace Report_Mail
 							MessageBox.Show(conf1 + ex.InnerException + "\n" + ex.StackTrace + "\n" + ex.Message);
 						}
 					}
+					x = 9;
+					Invoke(new Action(Label));
 					if (Do == attachments)
 						break;
 					Do++;
@@ -483,9 +485,7 @@ namespace Report_Mail
 						{
 							Message.Attachments.Dispose();
 							x = 8;
-							Invoke(new Action(Label));
-							x = 9;
-							Invoke(new Action(Label));
+							Invoke(new Action(Label));							
 							if (attachments == 1)
 								File.Delete(attachments1);
 							else if (attachments == 2)
@@ -506,8 +506,11 @@ namespace Report_Mail
 								File.Delete(attachments3);
 								File.Delete(attachments4);
 							}
-							if (Directory.Exists(temp))
+							if (System.IO.Directory.GetDirectories(temp).Length + System.IO.Directory.GetFiles(temp).Length > 0) { }
+							else
 								Directory.Delete(temp);
+							x = 9;
+							Invoke(new Action(Label));
 						}
 					}
 				}

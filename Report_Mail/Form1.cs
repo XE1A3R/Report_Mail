@@ -245,6 +245,12 @@ namespace Report_Mail
 							{
 								xlApp.Cells[2, f + 1] = row;
 								xlApp.Cells[2, f + 1].EntireRow.Font.Bold = true;
+								xlWorkSheet.Cells[2, f + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние вертикальные
+								xlWorkSheet.Cells[2, f + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние горизонтальные            
+								xlWorkSheet.Cells[2, f + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // верхняя внешняя
+								xlWorkSheet.Cells[2, f + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // правая внешняя
+								xlWorkSheet.Cells[2, f + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // левая внешняя
+								xlWorkSheet.Cells[2, f + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
 								f++;
 							}
 							int er = 0;
@@ -337,7 +343,8 @@ namespace Report_Mail
 							//xlApp.Cells[1, 3].HorizontalAlignment = Excel.Constants.xlCenter;
 							x = 3;
 							Invoke(new Action(Label));
-							//label1.Text = "Выгрузка в EXCEL...";
+							//label1.Text = "Выгрузка в EXCEL...";							
+
 							for (i = 0; i < dataGridView1.RowCount; i++)
 							{
 
@@ -347,6 +354,12 @@ namespace Report_Mail
 									if (color != "")
 										xlApp.Cells[h + 1, color_cl].Font.Color = Color.Red;
 									xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
+									xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние вертикальные
+									xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние горизонтальные            
+									xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // верхняя внешняя
+									xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // правая внешняя
+									xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // левая внешняя
+									xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
 								}
 								h++;
 							}
@@ -485,7 +498,7 @@ namespace Report_Mail
 						{
 							Message.Attachments.Dispose();
 							x = 8;
-							Invoke(new Action(Label));							
+							Invoke(new Action(Label));
 							if (attachments == 1)
 								File.Delete(attachments1);
 							else if (attachments == 2)

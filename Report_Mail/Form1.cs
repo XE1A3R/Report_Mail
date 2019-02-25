@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -48,6 +49,13 @@ namespace Report_Mail
 		private string xls;
 		private int Do = 1;
 		private string configuration;
+		static string ok = "Ok";
+		static string error = "Ok, Присутствуют ошибки";
+		static string error_1 = "There are errors";
+		string MesSub = ok;
+		string mysql = error_1;
+		string excel = error_1;
+		string mail = error_1;
 		readonly OdbcConnection cnS11 = new OdbcConnection(Properties.Settings.Default.S11);
 
 		[Obsolete]
@@ -55,7 +63,7 @@ namespace Report_Mail
 		{
 			InitializeComponent();
 			if (file.Length > 0)
-			{				
+			{
 				if (File.Exists(@"C:\confs\" + file[1] + ".config"))
 				{
 					try
@@ -105,10 +113,11 @@ namespace Report_Mail
 						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 								"" + Environment.NewLine + "" +
 								"" + Environment.NewLine + "" +
-								"     {4}\n" +
+								"     {4}" +
+								"" + Environment.NewLine + "" +
 								"     {5}" +
 								"" + Environment.NewLine + "" +
-								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 						SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
 						{
@@ -183,10 +192,11 @@ namespace Report_Mail
 						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 								"" + Environment.NewLine + "" +
 								"" + Environment.NewLine + "" +
-								"     {4}\n" +
+								"     {4}" +
+								"" + Environment.NewLine + "" +
 								"     {5}" +
 								"" + Environment.NewLine + "" +
-								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 						SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
 						{
@@ -222,10 +232,11 @@ namespace Report_Mail
 					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 							"" + Environment.NewLine + "" +
 							"" + Environment.NewLine + "" +
-							"     {4}\n" +
+							"     {4}" +
+							"" + Environment.NewLine + "" +
 							"     {5}" +
 							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 					SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
 					{
@@ -306,10 +317,11 @@ namespace Report_Mail
 					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 							"" + Environment.NewLine + "" +
 							"" + Environment.NewLine + "" +
-							"     {4}\n" +
+							"     {4}" +
+							"" + Environment.NewLine + "" +
 							"     {5}" +
 							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 					SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 					{
@@ -357,6 +369,7 @@ namespace Report_Mail
 						//progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
 						backgroundWorker1.ReportProgress(dataGridView1.RowCount + dataGridView1.ColumnCount);
 						backgroundWorker1.ReportProgress(0);
+						mysql = ok;
 					}
 					catch (Exception ex)
 					{
@@ -367,10 +380,11 @@ namespace Report_Mail
 						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 								"" + Environment.NewLine + "" +
 								"" + Environment.NewLine + "" +
-								"     {4}\n" +
+								"     {4}" +
+								"" + Environment.NewLine + "" +
 								"     {5}" +
 								"" + Environment.NewLine + "" +
-								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 						SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 						{
@@ -595,6 +609,7 @@ namespace Report_Mail
 						ReleaseObject(xlWorkSheet);
 						ReleaseObject(xlWorkBook);
 						ReleaseObject(xlApp);
+						excel = ok;
 
 					}
 					catch (Exception ex)
@@ -606,10 +621,11 @@ namespace Report_Mail
 						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 								"" + Environment.NewLine + "" +
 								"" + Environment.NewLine + "" +
-								"     {4}\n" +
+								"     {4}" +
+								"" + Environment.NewLine + "" +
 								"     {5}" +
 								"" + Environment.NewLine + "" +
-								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 						SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 						{
@@ -703,7 +719,8 @@ namespace Report_Mail
 					x = 6;
 					Invoke(new Action(Label));
 					//label1.Text = "Выполнено.";
-					Good();
+					//Good();
+					mail = ok;
 				}
 				catch (SmtpException ex)
 				{
@@ -721,10 +738,11 @@ namespace Report_Mail
 					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 							"" + Environment.NewLine + "" +
 							"" + Environment.NewLine + "" +
-							"     {4}\n" +
+							"     {4}" +
+							"" + Environment.NewLine + "" +
 							"     {5}" +
 							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message, ex.StackTrace);
 
 					Message.To.Add(new MailAddress(mail_support_error));
 					Message.Subject = "Report_Mail - Error " + configuration;
@@ -782,6 +800,43 @@ namespace Report_Mail
 		private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			Invoke(new Action(Sleep_Exit));
+			var today = DateTime.Today;
+			var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
+			var monday_old = today.AddDays(-day_old);
+			var sunday_old = monday_old.AddDays(6);
+			SmtpClient smtp1 = new SmtpClient(smtpClient, smtpClient_port)
+			{
+				Credentials = new NetworkCredential(from_mail, from_Password)
+			};
+			MailMessage Message1 = new MailMessage
+			{
+				From = new MailAddress(from_mail, from_mail_name)
+			};
+			Message1.To.Add(new MailAddress(mail_support_error));
+			Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
+			if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
+				MesSub = error;
+			Message1.Subject = "Report_Mail - " + MesSub;
+			Message1.Body = "Config - " + configuration +
+				Environment.NewLine +
+				"MySql - " + mysql +
+				Environment.NewLine +
+				"Excel - " + excel +
+				Environment.NewLine +
+				"Mail  - " + mail +
+				Environment.NewLine +
+				Environment.NewLine +
+				Sel_2_request + Environment.NewLine + Sel_3_request + Environment.NewLine + Sel_4_request + Environment.NewLine + Sel_5_request + Environment.NewLine;
+			if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
+				Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+			try
+			{
+				smtp1.Send(Message1);
+			}
+			catch (SmtpException)
+			{
+				MessageBox.Show("Ошибка!", "smtp");
+			}
 		}
 
 		void Sleep_Exit()
@@ -822,40 +877,50 @@ namespace Report_Mail
 			Worker_1();
 		}
 
-		void Good()
-		{
+		//void Good()
+		//{
 
-			var today = DateTime.Today;
-			var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
-			var monday_old = today.AddDays(-day_old);
-			var sunday_old = monday_old.AddDays(6);
-			SmtpClient smtp1 = new SmtpClient(smtpClient, smtpClient_port)
-			{
-				Credentials = new NetworkCredential(from_mail, from_Password)
-			};
-			MailMessage Message1 = new MailMessage
-			{
-				From = new MailAddress(from_mail, from_mail_name)
-			};
-			Message1.To.Add(new MailAddress(mail_support_error));
-			var ok = "Ok";
-			var error = "Ok, Присутствуют ошибки";
-			var MesSub = ok;
-			Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
-			if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
-				MesSub = error;			
-			Message1.Subject = "Report_Mail - " +MesSub;
-			Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
-			if(File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
-				Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
-			try
-			{
-				smtp1.Send(Message1);
-			}
-			catch (SmtpException)
-			{
-				MessageBox.Show("Ошибка!", "smtp");
-			}
-		}
+		//	var today = DateTime.Today;
+		//	var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
+		//	var monday_old = today.AddDays(-day_old);
+		//	var sunday_old = monday_old.AddDays(6);
+		//	SmtpClient smtp1 = new SmtpClient(smtpClient, smtpClient_port)
+		//	{
+		//		Credentials = new NetworkCredential(from_mail, from_Password)
+		//	};
+		//	MailMessage Message1 = new MailMessage
+		//	{
+		//		From = new MailAddress(from_mail, from_mail_name)
+		//	};
+		//	Message1.To.Add(new MailAddress(mail_support_error));
+		//	var ok = "Ok";
+		//	var error = "Ok, Присутствуют ошибки";
+		//	var MesSub = ok;
+		//	var mysql = ok;
+		//	var excel = ok;
+		//	var mail = ok;
+		//	Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
+		//	if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
+		//		MesSub = error;
+		//	Message1.Subject = "Report_Mail - " + MesSub;
+		//	Message1.Body = "MySql - " +mysql+
+		//		Environment.NewLine +
+		//		"Excel - " + excel+
+		//		Environment.NewLine +
+		//		"Mail  - " +mail +
+		//		Environment.NewLine +
+		//		Environment.NewLine+ 
+		//		Sel_2_request + Environment.NewLine + Sel_3_request + Environment.NewLine + Sel_4_request + Environment.NewLine + Sel_5_request + Environment.NewLine;
+		//	if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
+		//		Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+		//	try
+		//	{
+		//		smtp1.Send(Message1);
+		//	}
+		//	catch (SmtpException)
+		//	{
+		//		MessageBox.Show("Ошибка!", "smtp");
+		//}
+		//}
 	}
 }

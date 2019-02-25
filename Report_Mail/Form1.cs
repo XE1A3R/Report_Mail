@@ -623,27 +623,12 @@ namespace Report_Mail
 				}
 				try
 				{
-					var today = DateTime.Today;
-					var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
-					var monday_old = today.AddDays(-day_old);
-					var sunday_old = monday_old.AddDays(6);
 					smtp.Send(Message);
 					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 					x = 6;
 					Invoke(new Action(Label));
-					Message.To.Add(new MailAddress(mail_support_error));
-					Message.Subject = "Ok";
-					Message.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
-					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
-					try
-					{
-						smtp.Send(Message);
-					}
-					catch (SmtpException)
-					{
-						MessageBox.Show("Ошибка!", "smtp");
-					}
 					//label1.Text = "Выполнено.";
+					good();
 				}
 				catch (SmtpException ex)
 				{
@@ -759,6 +744,36 @@ namespace Report_Mail
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			Worker_1();
+		}
+
+		void good()
+		{
+
+			var today = DateTime.Today;
+			var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
+			var monday_old = today.AddDays(-day_old);
+			var sunday_old = monday_old.AddDays(6);
+			SmtpClient smtp1 = new SmtpClient(smtpClient, smtpClient_port)
+			{
+				Credentials = new NetworkCredential(from_mail, from_Password)
+			};
+			MailMessage Message1 = new MailMessage
+			{
+				From = new MailAddress(from_mail, from_mail_name)
+			};
+			Message1.To.Add(new MailAddress(mail_support_error));
+			Message1.Subject = "Ok";
+			Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
+			Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+			try
+			{
+				smtp1.Send(Message1);
+
+			}
+			catch (SmtpException)
+			{
+				MessageBox.Show("Ошибка!", "smtp");
+			}
 		}
 	}
 }

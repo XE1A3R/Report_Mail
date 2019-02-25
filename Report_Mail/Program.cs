@@ -12,6 +12,7 @@ namespace Report_Mail
 		/// Главная точка входа для приложения.
 		/// </summary>
 		[STAThread]
+		[Obsolete]
 		static void Main(string[] args)
 		{
 			Application.EnableVisualStyles();

@@ -47,6 +47,7 @@ namespace Report_Mail
 		private string mail_support_error;
 		private string xls;
 		private int Do = 1;
+		private string configuration;
 		readonly OdbcConnection cnS11 = new OdbcConnection(Properties.Settings.Default.S11);
 
 		[Obsolete]
@@ -54,11 +55,12 @@ namespace Report_Mail
 		{
 			InitializeComponent();
 			if (file.Length > 0)
-			{
+			{				
 				if (File.Exists(@"C:\confs\" + file[1] + ".config"))
 				{
 					try
 					{
+						configuration = file[1];
 						ExeConfigurationFileMap configFile = new ExeConfigurationFileMap
 						{
 							ExeConfigFilename = Path.Combine(@"C:\confs\", file[1] + ".config")
@@ -96,6 +98,39 @@ namespace Report_Mail
 					}
 					catch (Exception ex)
 					{
+						var today = DateTime.Today;
+						var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
+						var monday_old = today.AddDays(-day_old);
+						var sunday_old = monday_old.AddDays(6);
+						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
+								"" + Environment.NewLine + "" +
+								"" + Environment.NewLine + "" +
+								"     {4}\n" +
+								"     {5}" +
+								"" + Environment.NewLine + "" +
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+
+						SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
+						{
+							Credentials = new NetworkCredential("robot@gb15.ru", "1oc@1RoBoT")
+						};
+						MailMessage Message = new MailMessage
+						{
+							From = new MailAddress("robot@gb15.ru", "Robot")
+						};
+						Message.To.Add(new MailAddress("mis@gb15.ru"));
+						Message.Subject = "Report_Mail - Error " + configuration;
+						Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
+							"     " + ex.Message + "";
+						Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+						try
+						{
+							smtp.Send(Message);
+						}
+						catch (SmtpException)
+						{
+							MessageBox.Show("Ошибка!", "smtp");
+						}
 						MessageBox.Show("Error - " + ex.InnerException + "\n" + ex.StackTrace + "\n" + ex.Message);
 					}
 				}
@@ -103,6 +138,7 @@ namespace Report_Mail
 				{
 					try
 					{
+						var configuration = file[1];
 						ExeConfigurationFileMap configFile = new ExeConfigurationFileMap
 						{
 							ExeConfigFilename = Path.Combine(@"C:\confs\", file[1] + ".config")
@@ -140,12 +176,45 @@ namespace Report_Mail
 					}
 					catch (Exception ex)
 					{
+						var today = DateTime.Today;
+						var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
+						var monday_old = today.AddDays(-day_old);
+						var sunday_old = monday_old.AddDays(6);
+						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
+								"" + Environment.NewLine + "" +
+								"" + Environment.NewLine + "" +
+								"     {4}\n" +
+								"     {5}" +
+								"" + Environment.NewLine + "" +
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
+
+						SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
+						{
+							Credentials = new NetworkCredential("robot@gb15.ru", "1oc@1RoBoT")
+						};
+						MailMessage Message = new MailMessage
+						{
+							From = new MailAddress("robot@gb15.ru", "Robot")
+						};
+						Message.To.Add(new MailAddress("mis@gb15.ru"));
+						Message.Subject = "Report_Mail - Error " + configuration;
+						Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
+							"     " + ex.Message + "";
+						Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+						try
+						{
+							smtp.Send(Message);
+						}
+						catch (SmtpException)
+						{
+							MessageBox.Show("Ошибка!", "smtp");
+						}
 						MessageBox.Show("Error - " + ex.InnerException + "\n" + ex.StackTrace + "\n" + ex.Message);
 					}
 				}
 				else
 				{
-					Exception ex = new Exception();
+					Exception ex = new Exception("Файл " + file[1] + ".config ненайден");
 					var today = DateTime.Today;
 					var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
 					var monday_old = today.AddDays(-day_old);
@@ -153,9 +222,10 @@ namespace Report_Mail
 					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 							"" + Environment.NewLine + "" +
 							"" + Environment.NewLine + "" +
-							"     {4}" +
+							"     {4}\n" +
+							"     {5}" +
 							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
+							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
 
 					SmtpClient smtp = new SmtpClient("mail.gb15.ru", 25)
 					{
@@ -166,7 +236,7 @@ namespace Report_Mail
 						From = new MailAddress("robot@gb15.ru", "Robot")
 					};
 					Message.To.Add(new MailAddress("mis@gb15.ru"));
-					Message.Subject = "Error";
+					Message.Subject = "Report_Mail - Error " + configuration;
 					Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
 						"     " + ex.Message + "";
 					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
@@ -236,9 +306,10 @@ namespace Report_Mail
 					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 							"" + Environment.NewLine + "" +
 							"" + Environment.NewLine + "" +
-							"     {4}" +
+							"     {4}\n" +
+							"     {5}" +
 							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
+							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
 
 					SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 					{
@@ -249,7 +320,7 @@ namespace Report_Mail
 						From = new MailAddress(from_mail, from_mail_name)
 					};
 					Message.To.Add(new MailAddress(mail_support_error));
-					Message.Subject = "Error";
+					Message.Subject = "Report_Mail - Error " + configuration;
 					Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
 						"     " + ex.Message + "";
 					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
@@ -296,9 +367,10 @@ namespace Report_Mail
 						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 								"" + Environment.NewLine + "" +
 								"" + Environment.NewLine + "" +
-								"     {4}" +
+								"     {4}\n" +
+								"     {5}" +
 								"" + Environment.NewLine + "" +
-								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
 
 						SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 						{
@@ -309,7 +381,7 @@ namespace Report_Mail
 							From = new MailAddress(from_mail, from_mail_name)
 						};
 						Message.To.Add(new MailAddress(mail_support_error));
-						Message.Subject = "Error";
+						Message.Subject = "Report_Mail - Error " + configuration;
 						Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
 							"     " + ex.Message + "";
 						Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
@@ -345,8 +417,10 @@ namespace Report_Mail
 							conf1 = conf4;
 							att_up = attachments4;
 						}
-						ExeConfigurationFileMap configFile_excel = new ExeConfigurationFileMap();
-						configFile_excel.ExeConfigFilename = Path.Combine(conf1);
+						ExeConfigurationFileMap configFile_excel = new ExeConfigurationFileMap
+						{
+							ExeConfigFilename = Path.Combine(conf1)
+						};
 						Configuration config_excel = ConfigurationManager.OpenMappedExeConfiguration(configFile_excel, ConfigurationUserLevel.None);
 						string row_1 = config_excel.AppSettings.Settings["row_1"].Value;
 						string row_2 = config_excel.AppSettings.Settings["row_2"].Value;
@@ -532,9 +606,10 @@ namespace Report_Mail
 						Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 								"" + Environment.NewLine + "" +
 								"" + Environment.NewLine + "" +
-								"     {4}" +
+								"     {4}\n" +
+								"     {5}" +
 								"" + Environment.NewLine + "" +
-								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
+								"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
 
 						SmtpClient smtp = new SmtpClient(smtpClient, smtpClient_port)
 						{
@@ -545,7 +620,7 @@ namespace Report_Mail
 							From = new MailAddress(from_mail, from_mail_name)
 						};
 						Message.To.Add(new MailAddress(mail_support_error));
-						Message.Subject = "Error";
+						Message.Subject = "Report_Mail - Error " + configuration;
 						Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
 							"     " + ex.Message + "";
 						Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
@@ -628,7 +703,7 @@ namespace Report_Mail
 					x = 6;
 					Invoke(new Action(Label));
 					//label1.Text = "Выполнено.";
-					good();
+					Good();
 				}
 				catch (SmtpException ex)
 				{
@@ -646,12 +721,13 @@ namespace Report_Mail
 					Log.logger.Error("Error User:{0}, ID:{1}, IP:{2}, Ver:{3} \n" +
 							"" + Environment.NewLine + "" +
 							"" + Environment.NewLine + "" +
-							"     {4}" +
+							"     {4}\n" +
+							"     {5}" +
 							"" + Environment.NewLine + "" +
-							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message);
+							"" + Environment.NewLine + "", Log.username, Data.Person_id, Log.IP_Address, Log.version, ex.Message,ex.StackTrace);
 
 					Message.To.Add(new MailAddress(mail_support_error));
-					Message.Subject = "Error";
+					Message.Subject = "Report_Mail - Error " + configuration;
 					Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
 						"     " + ex.Message + "";
 					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
@@ -746,7 +822,7 @@ namespace Report_Mail
 			Worker_1();
 		}
 
-		void good()
+		void Good()
 		{
 
 			var today = DateTime.Today;
@@ -762,13 +838,19 @@ namespace Report_Mail
 				From = new MailAddress(from_mail, from_mail_name)
 			};
 			Message1.To.Add(new MailAddress(mail_support_error));
-			Message1.Subject = "Ok";
+			var ok = "Ok";
+			var error = "Ok, Присутствуют ошибки";
+			var MesSub = ok;
 			Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
-			Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+			if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
+				MesSub = error;			
+			Message1.Subject = "Report_Mail - " +MesSub;
+			Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
+			if(File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
+				Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
 			try
 			{
 				smtp1.Send(Message1);
-
 			}
 			catch (SmtpException)
 			{

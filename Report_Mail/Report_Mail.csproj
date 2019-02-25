@@ -54,7 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>computer-icons-checklist-clip-art-checklist-png-download-1200-with-checklist-icon-transparent %283%29.ico</ApplicationIcon>
+    <ApplicationIcon>1.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>613B93B6FD32F719E3C483F1AD398CA1567A76F0</ManifestCertificateThumbprint>
@@ -149,7 +149,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="computer-icons-checklist-clip-art-checklist-png-download-1200-with-checklist-icon-transparent %283%29.ico" />
+    <Content Include="1.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Prof\Prof.csproj">

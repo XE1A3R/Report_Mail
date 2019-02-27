@@ -581,10 +581,15 @@ namespace Report_Mail
                             for (j = 0; j < dataGridView1.ColumnCount; j++)
                             {
                                 backgroundWorker1.ReportProgress(i + j);
-                                if (color != "")
-                                    xlApp.Cells[h + 1, color_cl].Font.Color = Color.Red;
                                 xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
                                 xlWorkSheet.Cells[h + 1, j + 1].Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // все стороны
+                                if (color != "")
+                                {
+                                    if (xlWorkSheet.Cells[h + 1, color_cl].Text == "0")
+                                        xlApp.Rows[h + 1].Font.Color = Color.FromArgb(0, 128, 0);
+                                    else
+                                        xlApp.Cells[h + 1, color_cl].Font.Color = Color.Red;
+                                }
                                 // xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние вертикальные
                                 //xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние горизонтальные
                                 //xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // верхняя внешняя
@@ -604,7 +609,7 @@ namespace Report_Mail
                         Invoke(new Action(Label));
                         //label1.Text = "Сохранение EXCEL...";
                         Directory.CreateDirectory(@temp);
-                        xlWorkBook.SaveAs(att_up, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                        xlWorkBook.SaveAs(att_up, misValue, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
 
                         xlWorkBook.Close(true, misValue, misValue);
                         xlApp.Quit();
@@ -815,7 +820,7 @@ namespace Report_Mail
             {
                 From = new MailAddress(from_mail, from_mail_name)
             };
-            Message1.To.Add(new MailAddress(mail_support_error));            
+            Message1.To.Add(new MailAddress(mail_support_error));
             if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
                 MesSub = error;
             Message1.Subject = "Report_Mail - " + MesSub;

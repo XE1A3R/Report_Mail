@@ -446,6 +446,13 @@ namespace Report_Mail
                         var Cells_xlLeft_2 = config_excel.AppSettings.Settings["Cells_xlLeft_2"].Value;
                         var int_h = int.Parse(config_excel.AppSettings.Settings["h"].Value);
                         var color = config_excel.AppSettings.Settings["color"].Value;
+                        var value_color = config_excel.AppSettings.Settings["value_color"].Value;
+                        var Red = int.Parse(config_excel.AppSettings.Settings["Red"].Value);
+                        var Green = int.Parse(config_excel.AppSettings.Settings["Green"].Value);
+                        var Blue = int.Parse(config_excel.AppSettings.Settings["Blue"].Value);
+                        var Red_1 = int.Parse(config_excel.AppSettings.Settings["Red_1"].Value);
+                        var Green_1 = int.Parse(config_excel.AppSettings.Settings["Green_1"].Value);
+                        var Blue_1 = int.Parse(config_excel.AppSettings.Settings["Blue_1"].Value);
                         var data_1 = config_excel.AppSettings.Settings["data_1"].Value;
                         var data_2 = config_excel.AppSettings.Settings["data_2"].Value;
 
@@ -585,10 +592,10 @@ namespace Report_Mail
                                 xlWorkSheet.Cells[h + 1, j + 1].Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // все стороны
                                 if (color != "")
                                 {
-                                    if (xlWorkSheet.Cells[h + 1, color_cl].Text == "0")
-                                        xlApp.Rows[h + 1].Font.Color = Color.FromArgb(0, 128, 0);
+                                    if (xlWorkSheet.Cells[h + 1, color_cl].Text == value_color)
+                                        xlApp.Rows[h + 1].Font.Color = Color.FromArgb(Red, Green, Blue);
                                     else
-                                        xlApp.Cells[h + 1, color_cl].Font.Color = Color.Red;
+                                        xlApp.Cells[h + 1, color_cl].Font.Color = Color.FromArgb(Red_1,Green_1,Blue_1);
                                 }
                                 // xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние вертикальные
                                 //xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние горизонтальные

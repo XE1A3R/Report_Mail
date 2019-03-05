@@ -367,7 +367,7 @@ namespace Report_Mail
                         dataGridView1.DataSource = table;
                         Invoke(new Action(Label));
                         //progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
-                        backgroundWorker1.ReportProgress(dataGridView1.RowCount + dataGridView1.ColumnCount);
+                        backgroundWorker1.ReportProgress(dataGridView1.RowCount);
                         backgroundWorker1.ReportProgress(0);
                         mysql = ok;
                     }
@@ -447,7 +447,8 @@ namespace Report_Mail
                         var int_h = int.Parse(config_excel.AppSettings.Settings["h"].Value);
                         var color = config_excel.AppSettings.Settings["color"].Value;
                         var value_color = config_excel.AppSettings.Settings["value_color"].Value;
-                        var Red = int.Parse(config_excel.AppSettings.Settings["Red"].Value);
+						var oper = config_excel.AppSettings.Settings["oper"].Value;
+						var Red = int.Parse(config_excel.AppSettings.Settings["Red"].Value);
                         var Green = int.Parse(config_excel.AppSettings.Settings["Green"].Value);
                         var Blue = int.Parse(config_excel.AppSettings.Settings["Blue"].Value);
                         var Red_1 = int.Parse(config_excel.AppSettings.Settings["Red_1"].Value);
@@ -558,7 +559,7 @@ namespace Report_Mail
                                 xlApp.Cells[2, er].HorizontalAlignment = xl;
                             }
                         }
-                        int color_cl = 0;
+                        int color_cl = 10;
                         foreach (var row in color.Split(','))
                         {
                             if (color != "")
@@ -587,16 +588,45 @@ namespace Report_Mail
 
                             for (j = 0; j < dataGridView1.ColumnCount; j++)
                             {
-                                backgroundWorker1.ReportProgress(i + j);
+                                backgroundWorker1.ReportProgress(h);
                                 xlWorkSheet.Cells[h + 1, j + 1] = dataGridView1[j, i].Value.ToString();
                                 xlWorkSheet.Cells[h + 1, j + 1].Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // все стороны
                                 if (color != "")
                                 {
-                                    if (xlWorkSheet.Cells[h + 1, color_cl].Text == value_color)
-                                        xlApp.Rows[h + 1].Font.Color = Color.FromArgb(Red, Green, Blue);
-                                    else
-                                        xlApp.Cells[h + 1, color_cl].Font.Color = Color.FromArgb(Red_1,Green_1,Blue_1);
-                                }
+									//int test = Convert.ToInt32(value_color);
+									//int qwer = Convert.ToInt32(xlWorkSheet.Cells[h + 1, color_cl].Text);
+									int cell;
+									int.TryParse(xlWorkSheet.Cells[h + 1, color_cl].Text, out cell);
+									if(oper == "=")
+									{
+										if (xlWorkSheet.Cells[h + 1, color_cl].Text == value_color)
+											xlApp.Rows[h + 1].Font.Color = Color.FromArgb(Red, Green, Blue);
+										else
+											xlApp.Cells[h + 1, color_cl].Font.Color = Color.FromArgb(Red_1, Green_1, Blue_1);
+									}
+									else if(oper == ">")
+									{
+										if (cell > int.Parse(value_color))
+											xlApp.Rows[h + 1].Font.Color = Color.FromArgb(Red, Green, Blue);
+										else
+											xlApp.Cells[h + 1, color_cl].Font.Color = Color.FromArgb(Red_1, Green_1, Blue_1);
+									}
+									else if (oper == "<")
+									{
+										if (cell < int.Parse(value_color))
+											xlApp.Rows[h + 1].Font.Color = Color.FromArgb(Red, Green, Blue);
+										else
+											xlApp.Cells[h + 1, color_cl].Font.Color = Color.FromArgb(Red_1, Green_1, Blue_1);
+									}
+									else if (oper == "!=")
+									{
+										if (cell != int.Parse(value_color))
+											xlApp.Rows[h + 1].Font.Color = Color.FromArgb(Red, Green, Blue);
+										else
+											xlApp.Cells[h + 1, color_cl].Font.Color = Color.FromArgb(Red_1, Green_1, Blue_1);
+									}
+
+								}
                                 // xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние вертикальные
                                 //xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние горизонтальные
                                 //xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // верхняя внешняя

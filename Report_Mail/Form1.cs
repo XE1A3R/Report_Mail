@@ -574,7 +574,7 @@ namespace Report_Mail
 						}
 						//label1.Text = "Выгрузка в EXCEL...";						
 						//xlApp.Visible = true;
-						xlWorkSheet.View.FreezePanes(h+1, 1);
+						xlWorkSheet.View.FreezePanes(int_h+1, 1);
 						for (i = 0; i < dataGridView1.RowCount; i++)
 						{
 							for (j = 0; j < dataGridView1.ColumnCount; j++)

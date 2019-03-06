@@ -120,7 +120,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ClientSize = new System.Drawing.Size(284, 62);
+			this.ClientSize = new System.Drawing.Size(284, 61);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.dataGridView1);

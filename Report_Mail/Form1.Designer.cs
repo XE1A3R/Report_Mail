@@ -54,12 +54,12 @@
 			// 
 			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar1.ForeColor = System.Drawing.Color.Red;
+			this.progressBar1.ForeColor = System.Drawing.Color.LimeGreen;
 			this.progressBar1.Location = new System.Drawing.Point(12, 27);
 			this.progressBar1.MarqueeAnimationSpeed = 1;
 			this.progressBar1.Name = "progressBar1";
 			this.progressBar1.Size = new System.Drawing.Size(260, 23);
-			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
 			this.progressBar1.TabIndex = 0;
 			this.progressBar1.Visible = false;
 			// 

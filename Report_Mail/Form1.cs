@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace Report_Mail
 {
@@ -277,24 +279,52 @@ namespace Report_Mail
 		{
 			progressBar1.Visible = true;
 			progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
+
 			if (x == 1)
+			{
 				label1.Text = "Выполняется процедура...";
+				progressBar1.Style = ProgressBarStyle.Marquee;
+			}
 			else if (x == 2)
+			{
 				label1.Text = "Создание нового файла EXCEL...";
+				progressBar1.Style = ProgressBarStyle.Marquee;
+			}
 			else if (x == 3)
+			{
 				label1.Text = "Выгрузка в EXCEL... ";
+				progressBar1.Style = ProgressBarStyle.Continuous;
+			}
 			else if (x == 4)
+			{
 				label1.Text = "Сохранение EXCEL...";
+				progressBar1.Style = ProgressBarStyle.Marquee;
+			}
 			else if (x == 5)
+			{
 				label1.Text = "Отправка SMTP...";
+				progressBar1.Style = ProgressBarStyle.Marquee;
+			}
 			else if (x == 6)
+			{
 				label1.Text = "Отправлено.";
+				progressBar1.Style = ProgressBarStyle.Continuous;
+			}
 			else if (x == 7)
+			{
 				label1.Text = "Ошибка.";
+				progressBar1.Style = ProgressBarStyle.Continuous;
+			}
 			else if (x == 8)
+			{
 				label1.Text = "Удаление временных файлов...";
+				progressBar1.Style = ProgressBarStyle.Marquee;
+			}
 			else if (x == 9)
+			{
 				label1.Text = "Выполнено.";
+				progressBar1.Style = ProgressBarStyle.Continuous;
+			}
 		}
 
 		[Obsolete]
@@ -312,6 +342,8 @@ namespace Report_Mail
 				}
 				catch (Exception ex)
 				{
+					x = 7;
+					Invoke(new Action(Label));
 					var today = DateTime.Today;
 					var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
 					var monday_old = today.AddDays(-day_old);
@@ -371,10 +403,18 @@ namespace Report_Mail
 						//progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
 						backgroundWorker1.ReportProgress(dataGridView1.RowCount);
 						backgroundWorker1.ReportProgress(0);
+						object sel_null = "";
+						if (dataGridView1[0, 0].Value == sel_null)
+						{
+							excel_export = false;
+							mail_export = false;
+						}
 						mysql = ok;
 					}
 					catch (Exception ex)
 					{
+						x = 7;
+						Invoke(new Action(Label));
 						var today = DateTime.Today;
 						var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
 						var monday_old = today.AddDays(-day_old);
@@ -409,6 +449,7 @@ namespace Report_Mail
 						{
 							MessageBox.Show("Ошибка!", "smtp");
 						}
+
 					}
 				}
 				if (excel_export)
@@ -458,24 +499,16 @@ namespace Report_Mail
 						var data_1 = config_excel.AppSettings.Settings["data_1"].Value;
 						var data_2 = config_excel.AppSettings.Settings["data_2"].Value;
 
-						//Excel.Application xlApp;
-						//Excel.Workbook xlWorkBook;
-						//Excel.Worksheet xlWorkSheet;
 						object misValue = System.Reflection.Missing.Value;
 						x = 2;
 						Invoke(new Action(Label));
 						//label1.Text = "Создание нового файла EXCEL...";
 						Int16 i, j;
 						int h = int_h;
-						//xlApp = new Excel.Application();
-						//xlWorkBook = xlApp.Workbooks.Add(misValue);
-						//xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-						string path = "C:\\TestFileSave\\ABC.xlsx";
-						FileInfo filePath = new FileInfo(path);
 						var package = new ExcelPackage();
-
 						ExcelWorksheet xlWorkSheet = package.Workbook.Worksheets.Add("Отчет");
-
+						if (File.Exists(att_up))
+							File.Delete(att_up);
 
 						int f = 0;
 						h -= 1;
@@ -486,7 +519,10 @@ namespace Report_Mail
 							f++;
 						}
 						if (data_1 != "" | data_2 != "")
+						{
 							xlWorkSheet.Cells[int.Parse(data_1), int.Parse(data_2)].Value = xls;
+							xlWorkSheet.Cells[int.Parse(data_1), int.Parse(data_2)].Style.Font.Bold = true;
+						}
 						var xlLeft = ExcelHorizontalAlignment.Left;
 						var xlRight = ExcelHorizontalAlignment.Right;
 						var xlCenter = ExcelHorizontalAlignment.Center;
@@ -564,17 +600,24 @@ namespace Report_Mail
 						for (f = 0; f < this.dataGridView1.Columns.Count; f++)
 						{
 							xlWorkSheet.Cells[int_h, f + 1].Value = this.dataGridView1.Columns[f].HeaderCell.Value.ToString();
+							xlWorkSheet.Cells[int_h, f + 1].Style.Font.Size = 12;
 							xlWorkSheet.Cells[int_h, f + 1].Style.Font.Bold = true;
 							xlWorkSheet.Cells[int_h, f + 1].Style.Border.Top.Style = ExcelBorderStyle.Medium;
 							xlWorkSheet.Cells[int_h, f + 1].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
 							xlWorkSheet.Cells[int_h, f + 1].Style.Border.Left.Style = ExcelBorderStyle.Medium;
 							xlWorkSheet.Cells[int_h, f + 1].Style.Border.Right.Style = ExcelBorderStyle.Medium;
-							
-							//xlWorkSheet.Cells[int_h, f + 1].Borders.Weight = Excel.XlBorderWeight.xlMedium;
 						}
 						//label1.Text = "Выгрузка в EXCEL...";						
-						//xlApp.Visible = true;
-						xlWorkSheet.View.FreezePanes(int_h+1, 1);
+						foreach (var row in color.Split(','))
+						{
+							if (color != "")
+							{
+								color_cl = int.Parse(row);
+							}
+						}
+						xlWorkSheet.View.FreezePanes(int_h + 1, 1);
+						xlWorkSheet.Cells[int_h, 1,int_h, dataGridView1.ColumnCount].AutoFilter = true;
+
 						for (i = 0; i < dataGridView1.RowCount; i++)
 						{
 							for (j = 0; j < dataGridView1.ColumnCount; j++)
@@ -585,6 +628,7 @@ namespace Report_Mail
 								xlWorkSheet.Cells[int_h + 1, j + 1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 								xlWorkSheet.Cells[int_h + 1, j + 1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
 								xlWorkSheet.Cells[int_h + 1, j + 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+								
 								if (color != "")
 								{
 									//int test = Convert.ToInt32(value_color);
@@ -629,14 +673,12 @@ namespace Report_Mail
 								//xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
 							}
 							int_h++;
+
 						}
 						//backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 
-						for (int t = 1; t < 20; t++)
-						{
-							xlWorkSheet.Cells.AutoFitColumns();
-							//((Excel.Range)xlWorkSheet.Columns[t]).AutoFit();
-						}
+						xlWorkSheet.Cells.AutoFitColumns();
+						
 						x = 4;
 						Invoke(new Action(Label));
 						//label1.Text = "Сохранение EXCEL...";
@@ -654,6 +696,8 @@ namespace Report_Mail
 						//ReleaseObject(xlWorkBook);
 						//ReleaseObject(xlApp);
 						excel = ok;
+						x = 9;
+						Invoke(new Action(Label));
 					}
 					catch (Exception ex)
 					{
@@ -693,8 +737,7 @@ namespace Report_Mail
 						}
 					}
 				}
-				x = 9;
-				Invoke(new Action(Label));
+
 				if (Do == attachments)
 					break;
 				Do++;
@@ -757,6 +800,7 @@ namespace Report_Mail
 				}
 				try
 				{
+
 					smtp.Send(Message);
 					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 					x = 6;
@@ -792,6 +836,7 @@ namespace Report_Mail
 					Message.Body = "Error User: " + Log.username + ", ID: " + Data.Person_id + ", IP: " + Log.IP_Address + ", Ver: " + Log.version + " \n" +
 					" " + ex.Message + "";
 					Message.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
+
 					try
 					{
 						smtp.Send(Message);
@@ -830,6 +875,7 @@ namespace Report_Mail
 					else
 						Directory.Delete(temp);
 					x = 9;
+					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 					Invoke(new Action(Label));
 				}
 			}
@@ -842,7 +888,6 @@ namespace Report_Mail
 
 		private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			Invoke(new Action(Sleep_Exit));
 			var today = DateTime.Today;
 			var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
 			var monday_old = today.AddDays(-day_old);
@@ -873,12 +918,17 @@ namespace Report_Mail
 				Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
 			try
 			{
+				x = 9;
+				Invoke(new Action(Label));
 				smtp1.Send(Message1);
 			}
 			catch (SmtpException)
 			{
+				x = 7;
+				Invoke(new Action(Label));
 				MessageBox.Show("Ошибка!", "smtp");
 			}
+			Invoke(new Action(Sleep_Exit));
 		}
 
 		void Sleep_Exit()
@@ -888,7 +938,6 @@ namespace Report_Mail
 			notifyIcon1.BalloonTipText = "Завершение программы начнется через " + Convert.ToString(times / 1000) + " секунд";
 			notifyIcon1.ShowBalloonTip(5000);
 			Properties.Settings.Default.Save();
-
 		}
 
 		private void ReleaseObject(object obj)
@@ -918,51 +967,5 @@ namespace Report_Mail
 		{
 			Worker_1();
 		}
-
-		//void Good()
-		//{
-
-		// var today = DateTime.Today;
-		// var day_old = Convert.ToInt32(today.DayOfWeek) + 6;
-		// var monday_old = today.AddDays(-day_old);
-		// var sunday_old = monday_old.AddDays(6);
-		// SmtpClient smtp1 = new SmtpClient(smtpClient, smtpClient_port)
-		// {
-		// Credentials = new NetworkCredential(from_mail, from_Password)
-		// };
-		// MailMessage Message1 = new MailMessage
-		// {
-		// From = new MailAddress(from_mail, from_mail_name)
-		// };
-		// Message1.To.Add(new MailAddress(mail_support_error));
-		// var ok = "Ok";
-		// var error = "Ok, Присутствуют ошибки";
-		// var MesSub = ok;
-		// var mysql = ok;
-		// var excel = ok;
-		// var mail = ok;
-		// Message1.Body = Sel_2_request + " " + Sel_3_request + " " + Sel_4_request + " " + Sel_5_request;
-		// if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
-		// MesSub = error;
-		// Message1.Subject = "Report_Mail - " + MesSub;
-		// Message1.Body = "MySql - " +mysql+
-		// Environment.NewLine +
-		// "Excel - " + excel+
-		// Environment.NewLine +
-		// "Mail - " +mail +
-		// Environment.NewLine +
-		// Environment.NewLine+
-		// Sel_2_request + Environment.NewLine + Sel_3_request + Environment.NewLine + Sel_4_request + Environment.NewLine + Sel_5_request + Environment.NewLine;
-		// if (File.Exists("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"))
-		// Message1.Attachments.Add(new Attachment("" + Environment.CurrentDirectory + "/logs/" + today.ToString("yyyy-MM-dd") + ".log"));
-		// try
-		// {
-		// smtp1.Send(Message1);
-		// }
-		// catch (SmtpException)
-		// {
-		// MessageBox.Show("Ошибка!", "smtp");
-		//}
-		//}
 	}
 }

@@ -15,6 +15,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Threading;
 using System.Runtime.InteropServices;
+using OfficeOpenXml.Table;
 
 namespace Report_Mail
 {
@@ -616,7 +617,10 @@ namespace Report_Mail
 							}
 						}
 						xlWorkSheet.View.FreezePanes(int_h + 1, 1);
-						xlWorkSheet.Cells[int_h, 1,int_h, dataGridView1.ColumnCount].AutoFilter = true;
+						ExcelRange range = xlWorkSheet.Cells[int_h, 1, dataGridView1.RowCount + 2, dataGridView1.ColumnCount];
+						ExcelTable table1 = xlWorkSheet.Tables.Add(range, xlWorkSheet.Name.Replace(" ", String.Empty));
+						table1.TableStyle = TableStyles.Medium9;
+						//xlWorkSheet.Cells[int_h, 1,int_h, dataGridView1.ColumnCount].AutoFilter = true;
 
 						for (i = 0; i < dataGridView1.RowCount; i++)
 						{
@@ -672,9 +676,9 @@ namespace Report_Mail
 								//xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // левая внешняя
 								//xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
 							}
-							int_h++;
-
+							int_h++;							
 						}
+						
 						//backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 
 						xlWorkSheet.Cells.AutoFitColumns();

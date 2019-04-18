@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Report_Mail</RootNamespace>
     <AssemblyName>Report_Mail</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -145,15 +145,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="StatementForPastDay.config" />
     <None Include="template_StatementForPastDay\template_StatementForPastDay.config" />
     <None Include="template_temp-report\template_procPaidBedOccupancy.config" />
     <None Include="template_temp-report\template_procWhoIsLyingPaidBed.config" />
-    <None Include="test.config" />
-    <None Include="test1.config" />
-    <None Include="test_1.config" />
-    <None Include="test_2.config" />
-    <None Include="test_report.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

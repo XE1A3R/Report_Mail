@@ -450,7 +450,6 @@ namespace Report_Mail
 						{
 							MessageBox.Show("Ошибка!", "smtp");
 						}
-
 					}
 				}
 				if (excel_export)

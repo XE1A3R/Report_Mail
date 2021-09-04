@@ -804,7 +804,6 @@ namespace Report_Mail
 				}
 				try
 				{
-
 					smtp.Send(Message);
 					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 					x = 6;

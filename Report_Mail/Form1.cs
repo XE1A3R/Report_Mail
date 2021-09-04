@@ -748,7 +748,6 @@ namespace Report_Mail
 
 			if (mail_export)
 			{
-
 				x = 5;
 				Invoke(new Action(Label));
 				//label1.Text = "Отправка SMTP...";

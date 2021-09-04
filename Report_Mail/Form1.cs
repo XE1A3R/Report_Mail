@@ -666,7 +666,6 @@ namespace Report_Mail
 										else
 											xlWorkSheet.Cells[int_h + 1, color_cl].Style.Font.Color.SetColor(1, Red_1, Green_1, Blue_1);
 									}
-
 								}
 								// xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideVertical].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние вертикальные
 								//xlWorkSheet.Cells[h + 1, j + 1].Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlInsideHorizontal].LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous; // внутренние горизонтальные

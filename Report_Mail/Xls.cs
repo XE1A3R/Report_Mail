@@ -14,5 +14,7 @@ namespace Report_Mail
         public List<Sheet> Sheets { get; set; }
         [JsonPropertyName("Attachments")]
         public string Attachments { get; set; }
+        [JsonPropertyName("Format")]
+        public string Format { get; set; }
     }
 }

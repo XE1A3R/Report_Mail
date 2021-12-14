@@ -109,7 +109,7 @@ namespace Report_Mail
 
 				_x = 4;
 				Invoke(new Action(Label));
-				excel.Save(@$"{xls1.Attachments}\{xls1.name}.xls");
+				excel.Save(@$"{xls1.Attachments}\{xls1.name}.xls1.Format");
 				foreach (var item in _config.ConfigJson.Mail)
 				{
 					_x = 5;

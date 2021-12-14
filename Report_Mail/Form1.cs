@@ -109,7 +109,7 @@ namespace Report_Mail
 
 				_x = 4;
 				Invoke(new Action(Label));
-				excel.Save(@$"{xls1.Attachments}\{xls1.name}.xls1.Format");
+				excel.Save($@"{xls1.Attachments}\{xls1.name}.{xls1.Format}");
 				foreach (var item in _config.ConfigJson.Mail)
 				{
 					_x = 5;
@@ -137,8 +137,8 @@ namespace Report_Mail
 					message.Subject = item.Subject;
 					message.Body = item.Body;
 					foreach (var att in _config.ConfigJson.Xls)
-					{
-						message.Attachments.Add(new Attachment($@"{att.Attachments}\{att.name}.xls"));
+                    {
+                        message.Attachments.Add(new Attachment($@"{att.Attachments}\{att.name}.{att.Format}"));
 					}
 					smtp.Send(message);
 					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);

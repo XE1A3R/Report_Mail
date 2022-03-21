@@ -144,8 +144,7 @@ namespace Report_Mail
 					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
 					_x = 6;
 					Invoke(new Action(Label));
-				}
-				
+				}				
 			}
 		}
 

@@ -13,7 +13,6 @@ namespace Report_Mail
 
 		private readonly ConfigApp _config;
 		
-
 		[Obsolete]
 		public Form1(string[] file)
 		{

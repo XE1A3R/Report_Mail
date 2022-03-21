@@ -8,7 +8,6 @@ namespace Report_Mail
     [Serializable]
     public class ConfigJson : IConfigJson
     {
-        
         [JsonPropertyName("Xls")] 
         public List<Xls> Xls { get; set; }
         [JsonPropertyName("Mail")]

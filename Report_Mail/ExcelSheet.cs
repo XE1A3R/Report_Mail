@@ -19,8 +19,7 @@ namespace Report_Mail
         public void InsertData(int locationColumn, int locationRow,
             DataGridView dataGridView1,
             BackgroundWorker backgroundWorker1, List<ExcelSheet>? excelSheet)
-        {
-            
+        {            
             for (int i = 0; i < dataGridView1.Columns.Count; i++)
             {
                 if (excelSheet == null) continue;
@@ -62,10 +61,8 @@ namespace Report_Mail
                         excelSheet[excelSheet.Count - 1]._xlWorksheet.Cells[locationRow + 1, j + 1].Style.Border.Right
                             .Style = ExcelBorderStyle.Thin;
                     }
-
                     locationRow++;
                 }
-
                 excelSheet[excelSheet.Count - 1]._xlWorksheet.Cells.AutoFitColumns();
             }
         }

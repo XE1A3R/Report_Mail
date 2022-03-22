@@ -86,9 +86,9 @@ namespace Report_Mail
 			Invoke(new Action(Label));
 			var excel = new Excel();
 			if (_config.ConfigJson == null) return;
-			foreach (var xls1 in _config.ConfigJson.Xls)
+			foreach (var xls in _config.ConfigJson.Xls)
 			{
-				foreach (var sheet in xls1.Sheets)
+				foreach (var sheet in xls.Sheets)
 				{
 					_x = 2;
 					Invoke(new Action(Label));
@@ -108,7 +108,7 @@ namespace Report_Mail
 
 				_x = 4;
 				Invoke(new Action(Label));
-				excel.Save($@"{xls1.Attachments}\{xls1.name}.{xls1.Format}");
+				excel.Save(xls);
 				foreach (var item in _config.ConfigJson.Mail)
 				{
 					_x = 5;

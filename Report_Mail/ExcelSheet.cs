@@ -70,7 +70,7 @@ namespace Report_Mail
                             .Style.Border.Right.Style = ExcelBorderStyle.Thin;
                     }
                 }
-                excelSheet[excelSheet.Count - 1]._xlWorksheet.View.FreezePanes(locationRow, locationColumn);
+                excelSheet[excelSheet.Count - 1]._xlWorksheet.View.FreezePanes(locationRow+1, locationColumn);
                 var range = excelSheet[excelSheet.Count - 1]
                     ._xlWorksheet.Cells[locationRow, locationColumn, dataGridView1.RowCount + locationRow, dataGridView1.ColumnCount-1+locationColumn];
                 excelSheet[excelSheet.Count - 1]

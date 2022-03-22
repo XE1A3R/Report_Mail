@@ -190,9 +190,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="template_StatementForPastDay\template_StatementForPastDay.config" />
-    <None Include="template_temp-report\template_procPaidBedOccupancy.config" />
-    <None Include="template_temp-report\template_procWhoIsLyingPaidBed.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -6,6 +6,7 @@ using System.Data.Odbc;
 using System.IO;
 using System.Windows.Forms;
 using OfficeOpenXml;
+using Report_Mail.Interface;
 
 namespace Report_Mail
 {
@@ -31,14 +32,36 @@ namespace Report_Mail
             aFile.Close();
         }
 
+        public void Save(Xls xls)
+        {
+            if (!Directory.Exists(xls.Attachments))
+                Directory.CreateDirectory(xls.Attachments); 
+            else if (FileExists(xls)) 
+                FileDelete(xls);
+            var aFile = new FileStream(GetFile(xls), FileMode.Create);
+                _package.SaveAs(aFile);
+                _package.Dispose();
+                aFile.Close();
+        }
+
         private void FileDelete(string file)
         {
             File.Delete(file);
         }
 
+        private void FileDelete(IXls xls)
+        {
+            File.Delete(GetFile(xls));
+        }
+
         private static bool FileExists(string file)
         {
             return File.Exists(file);
+        }
+        
+        private static bool FileExists(IXls xls)
+        {
+            return File.Exists(GetFile(xls));
         }
 
         public static void CreateTable(string request, ref DataGridView dataGridView1)
@@ -48,6 +71,11 @@ namespace Report_Mail
             var table1 = new DataTable();
             adapter1.Fill(table1);
             dataGridView1.DataSource = table1;
+        }
+
+        private static string GetFile(IXls xls)
+        {
+            return @$"{xls.Attachments}\{xls.name}.{xls.Format}";
         }
     }
 }

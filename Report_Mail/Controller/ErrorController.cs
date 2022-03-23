@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Net;
 using System.Net.Mail;
 using System.Windows.Forms;
-using Prof;
 
-namespace Report_Mail
+namespace Report_Mail.Controller
 {
-    public class Error
+    public class ErrorController
     {
-        Error()
+        ErrorController()
         {
 					var today = DateTime.Today;
 					var day_old = Convert.ToInt32(today.DayOfWeek) + 6;

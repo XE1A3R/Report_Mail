@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Report_Mail.Model;
 
 namespace Report_Mail.Interface
 {

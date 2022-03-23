@@ -1,150 +1,77 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.ServiceModel.Dispatcher;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using OfficeOpenXml;
+using Report_Mail.Controller;
+using Report_Mail.Model;
 
 namespace Report_Mail
 {
 	public partial class Form1 : Form
 	{
-		private int _x;
-
-		private readonly ConfigApp _config;
+		private readonly ConfigAppController _config;
 		
 		[Obsolete]
-		public Form1(string[] file)
+		public Form1(IReadOnlyList<string> file)
 		{
 			InitializeComponent();
-			_config = new ConfigApp(file);
+			_config = new ConfigAppController(file);
 		}
 
-		void Worker_1()
+		private void Worker_1()
 		{
 			label1.Text = "";
 			backgroundWorker1.RunWorkerAsync();
 		}
 
+		public void ProgressValueMax(int value)
+		{
+			progressBar1.Maximum = value;
+		}
 		private void Label()
 		{
 			progressBar1.Visible = true;
-			progressBar1.Maximum = dataGridView1.RowCount + dataGridView1.ColumnCount;
-
-			if (_x == 1)
-			{
-				label1.Text = @"Выполняется процедура...";
-				progressBar1.Style = ProgressBarStyle.Marquee;
-			}
-			else if (_x == 2)
-			{
-				label1.Text = @"Создание нового файла EXCEL...";
-				progressBar1.Style = ProgressBarStyle.Marquee;
-			}
-			else if (_x == 3)
-			{
-				label1.Text = @"Выгрузка в EXCEL... ";
-				progressBar1.Style = ProgressBarStyle.Continuous;
-			}
-			else if (_x == 4)
-			{
-				label1.Text = @"Сохранение EXCEL...";
-				progressBar1.Style = ProgressBarStyle.Marquee;
-			}
-			else if (_x == 5)
-			{
-				label1.Text = @"Отправка SMTP...";
-				progressBar1.Style = ProgressBarStyle.Marquee;
-			}
-			else if (_x == 6)
-			{
-				label1.Text = @"Отправлено.";
-				progressBar1.Style = ProgressBarStyle.Continuous;
-			}
-			else if (_x == 7)
-			{
-				label1.Text = @"Ошибка.";
-				progressBar1.Style = ProgressBarStyle.Continuous;
-			}
-			else if (_x == 8)
-			{
-				label1.Text = @"Удаление временных файлов...";
-				progressBar1.Style = ProgressBarStyle.Marquee;
-			}
-			else if (_x == 9)
-			{
-				label1.Text = @"Выполнено.";
-				progressBar1.Style = ProgressBarStyle.Continuous;
-			}
+			progressBar1.Maximum = 100;
 		}
 
 		[Obsolete]
 		private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
 		{
-			_x = 2;
-			backgroundWorker1.ReportProgress(0);
-			Invoke(new Action(Label));
-			var excel = new Excel();
-			if (_config.ConfigJson == null) return;
-			foreach (var xls in _config.ConfigJson.Xls)
+			try
 			{
-				foreach (var sheet in xls.Sheets)
+				backgroundWorker1.ReportProgress(0);
+				Invoke(new Action(Label));
+				if (_config.ConfigJson == null) return;
+				var excel = _config.ConfigJson.Xls.Select(xls => new ExcelWindowController(xls, label1))
+					.ToList();
+
+				foreach (var item in excel)
 				{
-					_x = 2;
-					Invoke(new Action(Label));
-					excel.CreateSheet(sheet.Name);
-					foreach (var location in sheet.Locations)
-					{
-						_x = 1;
-						Invoke(new Action(Label));
-						Excel.CreateTable(location.Request, ref dataGridView1);
-						_x = 3;
-						Invoke(new Action(Label));
-						if (excel.ExcelSheet != null)
-							excel.ExcelSheet[excel.ExcelSheet.Count - 1].InsertData(location.Column, location.Row,
-								dataGridView1, backgroundWorker1, excel.ExcelSheet);
-					}
+					item.CreateSheet();
+					item.Save();
 				}
 
-				_x = 4;
-				Invoke(new Action(Label));
-				excel.Save(xls);
-				foreach (var item in _config.ConfigJson.Mail)
+				var mails = _config.ConfigJson.Mail.Select(mail => new MailController(mail, label1)).ToList();
+				foreach (var mail in mails)
 				{
-					_x = 5;
-					Invoke(new Action(Label));
-					SmtpClient smtp = new SmtpClient(item.SmtpClient, item.Port)
-					{
-						Credentials = new NetworkCredential(item.From, item.Password)
-					};
-					var toAddressListAdd = new MailAddressCollection();
-					foreach (var mailAddress in item.To.Select(mail => new MailAddress(mail)))
-					{
-						toAddressListAdd.Add(mailAddress);
-					}
-					MailAddressCollection toAddressListCc = new MailAddressCollection();
-					foreach (var mailAddress in item.Cc.Select(mail => new MailAddress(mail)))
-					{
-						toAddressListCc.Add(mailAddress);
-					}
-					var message = new MailMessage()
-					{
-						From = new MailAddress(item.From, item.Name)
-					};
-					message.To.Add(toAddressListAdd.ToString());
-					message.CC.Add(toAddressListCc.ToString());
-					message.Subject = item.Subject;
-					message.Body = item.Body;
-					foreach (var att in _config.ConfigJson.Xls)
-                    {
-                        message.Attachments.Add(new Attachment($@"{att.Attachments}\{att.name}.{att.Format}"));
-					}
-					smtp.Send(message);
-					backgroundWorker1.ReportProgress(dataGridView1.ColumnCount + dataGridView1.RowCount);
-					_x = 6;
-					Invoke(new Action(Label));
-				}				
+					mail.Send(_config.ConfigJson.Xls);
+				}
 			}
+			catch (Exception exception)
+			{
+				label1.Text = @$"Ошибка.\\n{exception.Message}";
+				Console.WriteLine(exception.Message);
+				throw;
+			}
+			label1.Text = @"Выполнено.";
 		}
 
 		private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)

@@ -48,6 +48,5 @@ namespace Report_Mail.Controller
             _excelPackage.Dispose();
             aFile.Close();
         }
-
     }
 }

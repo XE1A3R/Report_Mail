@@ -1,15 +1,17 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using System.Text.Json;
+using Report_Mail.Interface;
+using Report_Mail.Model;
 
-namespace Report_Mail
+namespace Report_Mail.Controller
 {
-    public class ConfigApp : BaseConfig
+    public class ConfigAppController : BaseConfigController
     {
         private static string? _configFile;
         public ConfigJson? ConfigJson { get; }
 
-        public ConfigApp(IReadOnlyList<string> file) : base(file)
+        public ConfigAppController(IReadOnlyList<string> file) : base(file)
         {
             _configFile = CurrentConfig;
             ConfigJson = Deserialize();

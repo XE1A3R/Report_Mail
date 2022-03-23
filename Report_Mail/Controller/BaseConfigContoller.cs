@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using Report_Mail.Interface;
 
-namespace Report_Mail
+namespace Report_Mail.Controller
 {
-    public class BaseConfig : IConfig
+    public class BaseConfigController : IConfig
     {
         public string CurrentConfig { get; }
         public IReadOnlyList<string> File { get; }
 
-        protected BaseConfig(IReadOnlyList<string> file)
+        protected BaseConfigController(IReadOnlyList<string> file)
         {
 	        File = file ?? throw new ArgumentNullException(nameof(file));
 	        CurrentConfig = GetConfig(file);

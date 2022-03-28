@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.ServiceModel.Dispatcher;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using OfficeOpenXml;
 using Report_Mail.Controller;
-using Report_Mail.Model;
 
 namespace Report_Mail
 {
@@ -32,23 +24,17 @@ namespace Report_Mail
 			backgroundWorker1.RunWorkerAsync();
 		}
 
-		public void ProgressValueMax(int value)
-		{
-			progressBar1.Maximum = value;
-		}
-		private void Label()
-		{
-			progressBar1.Visible = true;
-			progressBar1.Maximum = 100;
-		}
-
 		[Obsolete]
 		private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
 		{
 			try
 			{
 				backgroundWorker1.ReportProgress(0);
-				Invoke(new Action(Label));
+				Invoke(() =>
+				{
+					progressBar1.Visible = true;
+					progressBar1.Maximum = 100;
+				});
 				if (_config.ConfigJson == null) return;
 				var excel = _config.ConfigJson.Xls.Select(xls => new ExcelWindowController(xls, label1))
 					.ToList();

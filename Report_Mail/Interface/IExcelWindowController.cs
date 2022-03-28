@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using Report_Mail.Controller;
 
 namespace Report_Mail.Interface
 {
     public interface IExcelWindowController
     {
-        List<IExcelSheetController> SheetControllers { get; }
         void CreateSheet();
         void Save();
     }

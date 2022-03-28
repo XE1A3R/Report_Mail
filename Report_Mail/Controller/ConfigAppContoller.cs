@@ -19,13 +19,9 @@ namespace Report_Mail.Controller
 
         private static ConfigJson? Deserialize()
         {
-            if (_configFile != null)
-            {
-                var jsonString = System.IO.File.ReadAllText(_configFile);
-                return JsonSerializer.Deserialize<ConfigJson>(jsonString);
-            }
-
-            return null;
+            if (_configFile == null) return null;
+            var jsonString = System.IO.File.ReadAllText(_configFile);
+            return JsonSerializer.Deserialize<ConfigJson>(jsonString);
         }
     }
 }

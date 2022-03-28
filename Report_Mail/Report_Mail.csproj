@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Report_Mail</RootNamespace>
     <AssemblyName>Report_Mail</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -160,7 +160,6 @@
     <Compile Include="Interface\IConfig.cs" />
     <Compile Include="Interface\IConfigJson.cs" />
     <Compile Include="Interface\IDataController.cs" />
-    <Compile Include="Interface\IExcelSheetController.cs" />
     <Compile Include="Interface\IExcelWindowController.cs" />
     <Compile Include="Interface\IEmail.cs" />
     <Compile Include="Interface\ILocationTable.cs" />

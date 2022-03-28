@@ -1,28 +1,23 @@
 ﻿#nullable enable
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Forms;
 using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Report_Mail.Interface;
-using Report_Mail.Model;
 
 namespace Report_Mail.Controller
 {
-    public class ExcelSheetController : IExcelSheetController, ISheet
+    public class ExcelSheetController
     {
+        private readonly ISheet _sheet;
         private readonly Label _label1;
-        public string Name { get; set; }
-        public List<LocationTable>? Locations { get; set; } = new();
-        public ExcelWorksheet Worksheet { get; }
-        public List<ExcelCellsController> CellsControllers { get; } = new();
+        private ExcelWorksheet Worksheet { get; }
 
-        public ExcelSheetController(Sheet sheet, ExcelPackage excelPackage, Label label1)
+        private List<ExcelCellsController> CellsControllers { get; } = new();
+
+        public ExcelSheetController(ISheet sheet, ExcelPackage excelPackage, Label label1)
         {
+            _sheet = sheet;
             _label1 = label1;
-            Name = sheet.Name;
-            Locations?.AddRange(sheet.Locations ?? throw new InvalidOperationException());
             Worksheet = excelPackage.Workbook.Worksheets.Add(sheet.Name);
             InsertCell();
         }
@@ -30,8 +25,8 @@ namespace Report_Mail.Controller
         private void InsertCell()
         {
             _label1.Text = @"Выгрузка в EXCEL... ";
-            if (Locations == null) return;
-            foreach (var location in Locations)
+            if (_sheet.Locations == null) return;
+            foreach (var location in _sheet.Locations)
             {
                 CellsControllers.Add(new ExcelCellsController(location, Worksheet, _label1));
             }

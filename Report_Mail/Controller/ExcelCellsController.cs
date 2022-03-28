@@ -1,40 +1,25 @@
-﻿using System.ComponentModel;
-using System.Data;
+﻿using System.Data;
 using System.Windows.Forms;
 using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using OfficeOpenXml.Table;
 using Report_Mail.Interface;
-using Report_Mail.Model;
 
 namespace Report_Mail.Controller
 {
-    public class ExcelCellsController : ILocationTable
+    public class ExcelCellsController
     {
+        private readonly ILocationTable _location;
         private readonly Label _label1;
-        public bool PrintHeaders { get; set; }
-        public bool SmartTable { get; set; }
-        public bool FreezePanes { get; set; }
-        public uint Size { get; set; }
-        public string Request { get; set; }
-        public int Column { get; set; }
-        public int Row { get; set; }
         private readonly ExcelWorksheet _excelWorksheet;
         private readonly DataTable _table;
 
         public ExcelCellsController(ILocationTable location, ExcelWorksheet excelWorksheet, Label label1)
         {
+            _location = location;
             _label1 = label1;
-            PrintHeaders = location.PrintHeaders;
-            SmartTable = location.SmartTable;
-            FreezePanes = location.FreezePanes;
-            Size = location.Size;
-            Request = location.Request;
-            Column = location.Column;
-            Row = location.Row;
             _excelWorksheet = excelWorksheet;
             var sql = new MySqlDataController(new DataTable(), label1);
-            sql.Request(Request);
+            sql.Request(_location.Request);
             _table = sql.Table;
             InsertData();
         }
@@ -42,13 +27,13 @@ namespace Report_Mail.Controller
         private void InsertData()
         {
             _label1.Text = @"Выгрузка в EXCEL... ";
-            if (SmartTable)
-                _excelWorksheet.Cells[Row, Column].LoadFromDataTable(_table, PrintHeaders, TableStyles.Medium9);
+            if (_location.SmartTable)
+                _excelWorksheet.Cells[_location.Row, _location.Column].LoadFromDataTable(_table, _location.PrintHeaders, TableStyles.Medium9);
             else
-                _excelWorksheet.Cells[Row, Column].LoadFromDataTable(_table, PrintHeaders);
-            _excelWorksheet.Cells[Row, Column].AutoFitColumns();
-            if(FreezePanes)
-                _excelWorksheet.View.FreezePanes(Row+1,Column);
+                _excelWorksheet.Cells[_location.Row, _location.Column].LoadFromDataTable(_table, _location.PrintHeaders);
+            _excelWorksheet.Cells[_location.Row, _location.Column].AutoFitColumns();
+            if(_location.FreezePanes)
+                _excelWorksheet.View.FreezePanes(_location.Row+1,_location.Column);
         }
                         // backgroundWorker.ReportProgress(i + j);
     }

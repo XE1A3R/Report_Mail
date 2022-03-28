@@ -8,62 +8,44 @@ using Report_Mail.Model;
 
 namespace Report_Mail.Controller
 {
-    public class MailController : IMail
+    public class MailController 
     {
-        private readonly Label _label1;
-        public string MailExport { get; set; }
-        public string SmtpClient { get; set; }
-        public int Port { get; set; }
-        public string From { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public List<string> To { get; set; } = new();
-        public List<string> Cc { get; set; } = new();
-        public string Subject { get; set; }
-        public string Body { get; set; }
-        public List<string> MailSupportError { get; set; } = new();
-        
-        public MailController(IMail mail, Label label1)
+	    private readonly IMail _mail;
+	    private readonly Label _label1;
+	    private List<string> MailSupportError { get; } = new();
+
+	    public MailController(IMail mail, Label label1)
         {
-            _label1 = label1;
-            MailExport = mail.MailExport;
-            SmtpClient = mail.SmtpClient;
-            Port = mail.Port;
-            From = mail.From;
-            Name = mail.Name;
-            Password = mail.Password;
-            To.AddRange(mail.To);
-            Cc.AddRange(mail.Cc);
-            Subject = mail.Subject;
-            Body = mail.Body;
-            MailSupportError.AddRange(mail.MailSupportError);
+	        _mail = mail;
+	        _label1 = label1;
+            MailSupportError.AddRange(_mail.MailSupportError);
         }
 
         public void Send(IEnumerable<Xls> configJsonXls)
         {
 	        _label1.Text = @"Отправка SMTP...";
-			var smtp = new SmtpClient(SmtpClient, Port)
+			var smtp = new SmtpClient(_mail.SmtpClient, _mail.Port)
 			{
-			Credentials = new NetworkCredential(From, Password)
+			Credentials = new NetworkCredential(_mail.From, _mail.Password)
 			};
 			var toAddressListAdd = new MailAddressCollection();
-			foreach (var mailAddress in To.Select(mail => new MailAddress(mail)))
+			foreach (var mailAddress in _mail.To.Select(mail => new MailAddress(mail)))
 			{
 				toAddressListAdd.Add(mailAddress);
 			}
 			var toAddressListCc = new MailAddressCollection();
-			foreach (var mailAddress in Cc.Select(mail => new MailAddress(mail)))
+			foreach (var mailAddress in _mail.Cc.Select(mail => new MailAddress(mail)))
 			{
 				toAddressListCc.Add(mailAddress);
 			}
 			var message = new MailMessage()
 			{
-				From = new MailAddress(From, Name)
+				From = new MailAddress(_mail.From, _mail.Name)
 			};
 			message.To.Add(toAddressListAdd.ToString());
 			message.CC.Add(toAddressListCc.ToString());
-			message.Subject = Subject;
-			message.Body = Body;
+			message.Subject = _mail.Subject;
+			message.Body = _mail.Body;
 			foreach (var att in configJsonXls)
 			{
 				message.Attachments.Add(new Attachment($@"{att.Attachments}\{att.Name}.{att.Format}"));

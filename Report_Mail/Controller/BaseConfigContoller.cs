@@ -7,8 +7,8 @@ namespace Report_Mail.Controller
 {
     public class BaseConfigController : IConfig
     {
-        public string CurrentConfig { get; }
-        public IReadOnlyList<string> File { get; }
+        protected string CurrentConfig { get; }
+        private IReadOnlyList<string> File { get; }
 
         protected BaseConfigController(IReadOnlyList<string> file)
         {

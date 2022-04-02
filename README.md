@@ -3,7 +3,7 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/lamerer/Report_Mail)<br>
 <br>
 Master:<br>
-[![.NET Core Desktop](https://github.com/lameRER/Report_Mail/actions/workflows/dotnet-desktop.yml/badge.svg?branch=master)](https://github.com/lameRER/Report_Mail/actions/workflows/dotnet-desktop.yml)<br>
+![.NET Core Desktop](https://img.shields.io/github/workflow/status/lamerer/Report_Mail/.NET%20Core%20Desktop)<br>
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/lameRER/Report_Mail/master)<br>
 ![GitHub issues](https://img.shields.io/github/issues/lamerer/Report_Mail)<br>
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/lamerer/Report_Mail)

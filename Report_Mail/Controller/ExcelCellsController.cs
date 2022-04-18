@@ -31,7 +31,7 @@ namespace Report_Mail.Controller
                 _excelWorksheet.Cells[_location.Row, _location.Column].LoadFromDataTable(_table, _location.PrintHeaders, TableStyles.Medium9);
             else
                 _excelWorksheet.Cells[_location.Row, _location.Column].LoadFromDataTable(_table, _location.PrintHeaders);
-            _excelWorksheet.Cells[_location.Row, _location.Column].AutoFitColumns();
+            _excelWorksheet.Cells.AutoFitColumns();
             if(_location.FreezePanes)
                 _excelWorksheet.View.FreezePanes(_location.Row+1,_location.Column);
         }

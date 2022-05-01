@@ -21,6 +21,8 @@ namespace Report_Mail
 		private void Worker_1()
 		{
 			label1.Text = "";
+            progressBar1.Visible = true;
+            progressBar1.Maximum = 100;
 			backgroundWorker1.RunWorkerAsync();
 		}
 
@@ -30,20 +32,11 @@ namespace Report_Mail
 			try
 			{
 				backgroundWorker1.ReportProgress(0);
-				Invoke(() =>
-				{
-					progressBar1.Visible = true;
-					progressBar1.Maximum = 100;
-				});
 				if (_config.ConfigJson == null) return;
-				var excel = _config.ConfigJson.Xls.Select(xls => new ExcelWindowController(xls, label1))
+				var excel = _config.ConfigJson.Xls.Select(xls => new ExcelController(xls, label1))
 					.ToList();
-
-				foreach (var item in excel)
-				{
-					item.CreateSheet();
-					item.Save();
-				}
+				excel.ForEach(excelWindowController=>excelWindowController.CreateSheet());
+				excel.ForEach(excelWindowController=>excelWindowController.Save());
 
 				var mails = _config.ConfigJson.Mail.Select(mail => new MailController(mail, label1)).ToList();
 				foreach (var mail in mails)
@@ -52,13 +45,20 @@ namespace Report_Mail
 				}
 			}
 			catch (Exception exception)
-			{
-				label1.Text = @$"Ошибка.\\n{exception.Message}";
+            {
+                label1.Invoke((MethodInvoker) delegate
+                {
+                    label1.Text = @$"Ошибка.\\n{exception.Message}";
+                });
 				Console.WriteLine(exception.Message);
 				throw;
 			}
-			label1.Text = @"Выполнено.";
-		}
+
+            label1.Invoke((MethodInvoker) delegate
+            {
+                label1.Text = @"Выполнено.";
+            });
+        }
 
 		private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{

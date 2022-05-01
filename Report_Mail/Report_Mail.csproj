@@ -146,11 +146,9 @@
     <Compile Include="Controller\ConfigAppContoller.cs" />
     <Compile Include="Controller\ErrorController.cs" />
     <Compile Include="Controller\ExcelWindowContoller.cs" />
-    <Compile Include="Controller\ExcelSheetController.cs" />
-    <Compile Include="Controller\ExcelCellsController.cs" />
     <Compile Include="Controller\FileManagerController.cs" />
     <Compile Include="Controller\MailController.cs" />
-    <Compile Include="Controller\MySqlDataController.cs" />
+    <Compile Include="Controller\MySqlOdbcDataController.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

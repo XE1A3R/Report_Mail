@@ -23,7 +23,10 @@ namespace Report_Mail.Controller
 
         public void Send(IEnumerable<Xls> configJsonXls)
         {
-	        _label1.Text = @"Отправка SMTP...";
+            _label1.Invoke((MethodInvoker) delegate
+            {
+	            _label1.Text = @"Отправка SMTP...";
+            });
 			var smtp = new SmtpClient(_mail.SmtpClient, _mail.Port)
 			{
 			Credentials = new NetworkCredential(_mail.From, _mail.Password)
